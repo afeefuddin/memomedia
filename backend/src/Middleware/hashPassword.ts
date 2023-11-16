@@ -5,7 +5,7 @@ async function hashPassword(pass : string){
     return hashedValue;
 }
 async function comparePassword(pass:string, hashedValue : string) {
-    const isMatch = bcrypt.compare(pass,hashedValue);
+    const isMatch = await bcrypt.compare(pass,hashedValue);
     return isMatch;
 }
 

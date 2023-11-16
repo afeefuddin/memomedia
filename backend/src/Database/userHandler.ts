@@ -1,5 +1,6 @@
 import { User } from "../Model/UserSchema";
-import { Inewuser } from "../Interfaces/Interface";
+import { Iloginuser, Inewuser } from "../Interfaces/Interface";
+import { comparePassword } from "../Middleware/hashPassword";
 
 
 async function addUser(userData :Inewuser){
@@ -18,4 +19,29 @@ async function addUser(userData :Inewuser){
         return false;
     }
 }
-export {addUser}
+async function isUserPresent(userData:Inewuser){
+    if(!userData.email || !userData.username){
+        return true;
+    }
+    const email = userData.email;
+    const username = userData.username;
+    const isPresent  = await User.findOne({$or : [{email:email},{username:username}]})
+    if(isPresent){
+        return true;
+    }
+    return false;
+}
+
+async function isValidDetails(userData: Iloginuser) {
+    const username = userData.username;
+    const password = userData.password;
+    const res = await User.findOne({username:username});
+    const hashedValue = res.password;
+    const isCorrect = await comparePassword(password,hashedValue)
+    if(isCorrect){
+        return true;
+    }
+    return false;
+
+}
+export {addUser, isUserPresent,isValidDetails}

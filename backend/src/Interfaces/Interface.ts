@@ -32,5 +32,9 @@ interface Inewuser {
     profilePic? : string;
     accountCreated? : number;
 }
+interface Iloginuser {
+    username : string;
+    password : string;
+}
 
-export {IComment,Ipost,Iuser,Inewuser};
+export {IComment,Ipost,Iuser,Inewuser,Iloginuser};
