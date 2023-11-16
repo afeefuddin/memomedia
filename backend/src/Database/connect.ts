@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 const MONGO_URL =  process.env.MONGODB_URL;
 const dbName = process.env.DB_NAME;
 
+
 const connectDB= async() : Promise<void> =>{
     try{
         await mongoose.connect(MONGO_URL, {
@@ -15,4 +16,4 @@ const connectDB= async() : Promise<void> =>{
     }
 }
 
-module.exports = {connectDB};
+export {connectDB};

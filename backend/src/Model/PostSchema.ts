@@ -1,6 +1,8 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
+import { Ipost } from "../Interfaces/Interface";
 
-const PostSchema = new mongoose.Schema({
+
+const PostSchema = new mongoose.Schema<Ipost>({
     caption : {
         type: String,
         required : false,
@@ -11,12 +13,13 @@ const PostSchema = new mongoose.Schema({
         required : true,
     },
     date :{
-        type : String,
-        default : new Date()
+        type : Number,
+        default : Date.now()
     },
     userId : {
         type : Schema.Types.ObjectId,
         ref : 'User',
+        required: true,
     },
     likes : {
         type : Number,
@@ -26,6 +29,6 @@ const PostSchema = new mongoose.Schema({
     comments : [{type : Schema.Types.ObjectId, ref : 'Comment'}],
 })
 
-const Post = mongoose.model('Post',PostSchema);
+const Post = mongoose.model<Ipost>('Post',PostSchema);
 
-module.exports = {Post};
+export {Post};
