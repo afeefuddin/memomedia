@@ -10,7 +10,7 @@ async function loginUser(req:Request,res:Response) {
         return;
     }
     const token = generateWebTokens(loginData.username);
-    res.status(200).json({auth : token});
+    res.status(200).json({auth : token, userData : isCorrect });
 
 }
 

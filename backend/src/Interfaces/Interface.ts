@@ -10,7 +10,7 @@ interface Ipost {
     pitcure : string;
     userId : Types.ObjectId;
     date? : number;
-    likes? : number;
+    likes? : Types.ObjectId[];
     comments? : Types.ObjectId[];
 
 }

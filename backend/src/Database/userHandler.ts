@@ -39,9 +39,10 @@ async function isValidDetails(userData: Iloginuser) {
     const hashedValue = res.password;
     const isCorrect = await comparePassword(password,hashedValue)
     if(isCorrect){
-        return true;
+        return res;
     }
-    return false;
+    return null;
 
 }
+
 export {addUser, isUserPresent,isValidDetails}
