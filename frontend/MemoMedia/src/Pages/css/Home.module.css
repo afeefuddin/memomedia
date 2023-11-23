@@ -1,0 +1,12 @@
+.container{
+    background: var(--secondary-bg-color);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.gridContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+}

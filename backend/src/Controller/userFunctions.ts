@@ -4,13 +4,37 @@ import { generateWebTokens } from "../Middleware/auth";
 
 async function loginUser(req:Request,res:Response) {
     const loginData = req.body;
-    const isCorrect = await isValidDetails(loginData);
+    let isCorrect: any = await isValidDetails(loginData);
     if(!isCorrect){
         res.sendStatus(401);
         return;
     }
+
+    const {
+        _id,
+        username,
+        email,
+        profilePic,
+        post,
+        follower,
+        following,
+        accountCreated,
+      } = isCorrect;
+    
+      const dataToSend = {
+        _id,
+        username,
+        email,
+        profilePic,
+        post,
+        follower,
+        following,
+        accountCreated,
+      };
+    
+
     const token = generateWebTokens(loginData.username);
-    res.status(200).json({auth : token, userData : isCorrect });
+    res.status(200).json({auth : token, userData : dataToSend });
 
 }
 

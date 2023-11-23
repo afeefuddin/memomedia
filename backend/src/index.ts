@@ -1,4 +1,4 @@
-import express, {Application} from 'express';
+import express, {Application, NextFunction} from 'express';
 // import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -6,6 +6,7 @@ import {connectDB} from './Database/connect';
 import { router } from './Routes/routes';
 import { authenticateUser } from './Middleware/auth';
 import { authRouter } from './Routes/authRouter';
+import { errorHandler } from './Middleware/error';
 
 
 const app : Application = express();
@@ -22,9 +23,13 @@ app.use('/api',router);
 
 app.use(authenticateUser);
 
-app.use('/api',authRouter)
+app.use('/api',authRouter);
 
+app.use(errorHandler);
 
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+  });
 app.listen(port,()=>{
     console.log(`Started the server on port ${port}`)
 })

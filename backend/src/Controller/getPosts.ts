@@ -9,6 +9,7 @@ async function getPosts(req:Request,res:Response){
         const posts = await getPostFromDb(pos,size);
         if(posts===null){
             res.sendStatus(204);
+            return;
         }
         res.status(200).json(posts);
     }

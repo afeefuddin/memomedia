@@ -1,0 +1,19 @@
+body {
+    background-color: #1b1928;
+  }
+  
+  .skeleton {
+    width: 350px;
+    height: 250px;
+    animation: skeleton-loading 1s linear infinite alternate;
+    border-radius: 10px;
+  }
+  
+  @keyframes skeleton-loading {
+    0% {
+      background-color:var(--loading-color-primary);
+    }
+    100% {
+      background-color: var(--loading-color-secondary);
+    }
+  }

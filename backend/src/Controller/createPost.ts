@@ -4,7 +4,10 @@ import { addPostinDB } from "../Database/PostHandler";
 async function createPost(req: Request,res:Response){
     try{
         const postBody= req.body;
+        //Added the post
         const Post = await addPostinDB(postBody);
+        //Adding the Id of the post in the user profile
+       
         if(Post){
             res.sendStatus(201);
         }

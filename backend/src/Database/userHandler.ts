@@ -1,6 +1,7 @@
 import { User } from "../Model/UserSchema";
 import { Iloginuser, Inewuser } from "../Interfaces/Interface";
 import { comparePassword } from "../Middleware/hashPassword";
+import { Types } from "mongoose";
 
 
 async function addUser(userData :Inewuser){
@@ -45,4 +46,17 @@ async function isValidDetails(userData: Iloginuser) {
 
 }
 
-export {addUser, isUserPresent,isValidDetails}
+async function  addPostToUser(postID:Types.ObjectId,userId:Types.ObjectId) {
+    try{
+
+        const insert = await User.updateOne(
+            {_id:userId},
+            {$push:{post:postID}}
+        )
+        return true
+    }
+    catch(error){
+        return false
+    }
+}
+export {addUser, isUserPresent,isValidDetails,addPostToUser}
