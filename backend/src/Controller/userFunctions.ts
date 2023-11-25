@@ -4,6 +4,7 @@ import { generateWebTokens } from "../Middleware/auth";
 
 async function loginUser(req:Request,res:Response) {
     const loginData = req.body;
+    console.log('here')
     let isCorrect: any = await isValidDetails(loginData);
     if(!isCorrect){
         res.sendStatus(401);

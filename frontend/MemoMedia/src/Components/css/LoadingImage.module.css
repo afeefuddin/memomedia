@@ -3,8 +3,8 @@ body {
   }
   
   .skeleton {
-    width: 350px;
-    height: 250px;
+    width: 450px;
+    height: 350px;
     animation: skeleton-loading 1s linear infinite alternate;
     border-radius: 10px;
   }
@@ -15,5 +15,21 @@ body {
     }
     100% {
       background-color: var(--loading-color-secondary);
+    }
+  }
+  @media (width<500px){
+    .skeleton {
+      width: 350px;
+      height: 250px;
+      animation: skeleton-loading 1s linear infinite alternate;
+      border-radius: 10px;
+    }
+  }
+  @media (width<380px){
+    .skeleton {
+      width: 280px;
+      height: 200px;
+      animation: skeleton-loading 1s linear infinite alternate;
+      border-radius: 10px;
     }
   }

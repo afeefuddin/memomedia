@@ -1,5 +1,5 @@
 import express, {Application, NextFunction} from 'express';
-// import cors from 'cors';
+import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
 import {connectDB} from './Database/connect';
@@ -11,7 +11,9 @@ import { errorHandler } from './Middleware/error';
 
 const app : Application = express();
 
-// app.use(cors);
+app.use(cors({
+  origin:'*'
+}));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

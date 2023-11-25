@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import LoginComponent from '../Components/LoginComponent'
 import styles from './css/Home.module.css'
 import { useSelector } from 'react-redux'
@@ -9,11 +9,11 @@ const { container,gridContainer} = styles
 
 function Home() {
     const isLoggedIn = useSelector((state:any)=>state.auth.isAuthenticated)
-    if(isLoggedIn){
-        <HomeFeed />
-    }else{
+
   return (
-    <div className={container}>
+      <>
+      { isLoggedIn?  (<HomeFeed />):(
+          <div className={container}>
         <div className={gridContainer}>
             <div> 
                 <div className='text-xl mb-4 text-center font-lato'>Random Meme</div>
@@ -22,8 +22,11 @@ function Home() {
             <div><LoginComponent /></div>
         </div>
     </div>
+      )
+}
+    </>
   )
 }
-}
+
 
 export default Home

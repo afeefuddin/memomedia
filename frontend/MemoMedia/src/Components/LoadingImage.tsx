@@ -1,9 +1,9 @@
 import React from 'react'
 import styles from './css/LoadingImage.module.css'
 const {skeleton }= styles;
-function LoadingImage() {
+function LoadingImage(props:any) {
   return (
-    <div className={skeleton}></div>
+    <div  className={skeleton}></div>
   )
 }
 

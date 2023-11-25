@@ -5,7 +5,6 @@
 
 .light{
   --primary-bg-color : #DAE0E6;
-  ;
   --secondary-bg-color : rgb(255,255,255); 
   --loading-color-primary : rgba(0,0,0,0.2);
   --loading-color-secondary : rgba(0,0,0,0.1);

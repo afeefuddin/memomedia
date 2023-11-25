@@ -16,18 +16,27 @@ interface AuthState {
   isAuthenticated: boolean;
   userData : Iuser;
 }
+const getTokenFromLocalStorage = (): boolean  => {
+    if( localStorage.getItem('jwt_token_id')===null){
+      return false
+
+    }
+    return true
+  
+};
 
 const initialState: AuthState = {
-  isAuthenticated: false,
-  userData : {
-    username : "",
-    email : "",
-    post : [],
-    follower : [],
-    following : [],
-    accountCreated : 0,
-    profilePic : "",
+    isAuthenticated: getTokenFromLocalStorage() ,
+    userData : {
+      username : "",
+      email : "",
+      post : [],
+      follower : [],
+      following : [],
+      accountCreated : 0,
+      profilePic : "",
   }
+  
 };
 
 const authSlice = createSlice({
