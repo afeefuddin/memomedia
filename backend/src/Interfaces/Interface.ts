@@ -4,6 +4,8 @@ interface IComment {
     message : string;
     post : Types.ObjectId;
     user : Types.ObjectId;
+    date : number;
+    likes : Types.ObjectId[];
 }
 interface Ipost {
     caption : string;

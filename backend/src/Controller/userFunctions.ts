@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { isValidDetails } from "../Database/userHandler";
 import { generateWebTokens } from "../Middleware/auth";
+import { getIfUserHasLiked } from "../Database/PostHandler";
 
 async function loginUser(req:Request,res:Response) {
     const loginData = req.body;
@@ -39,4 +40,20 @@ async function loginUser(req:Request,res:Response) {
 
 }
 
-export {loginUser};
+async function userHasLiked(req:Request, res:Response){
+  const userId = req.headers.userid;
+  const postId = req.headers.postid;
+  console.log(userId)
+  if(!userId || !postId){
+    res.sendStatus(401);
+        return;
+  }
+  const hasLiked = await getIfUserHasLiked(userId,postId);
+  if(hasLiked){
+    res.status(200).json({isLiked : true});
+  }
+  else{
+    res.status(200).json({isLiked : false});
+  }
+}
+export {loginUser,userHasLiked};

@@ -14,6 +14,13 @@ const CommentSchema = new mongoose.Schema<IComment>({
         type : Schema.Types.ObjectId,
         ref : 'User'
     },
+    date : {
+        type : Number,
+        default : Date.now()
+    },
+    likes : {
+        type : [{type : Schema.Types.ObjectId, ref : 'User'}],
+    }
 })
 
 const Comment = mongoose.model<IComment>('Comment', CommentSchema);

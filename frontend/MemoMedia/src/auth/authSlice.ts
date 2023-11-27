@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 
 interface Iuser {
+    userId :  string
     username : string;
     email : string;
     post : any;
@@ -24,10 +25,10 @@ const getTokenFromLocalStorage = (): boolean  => {
     return true
   
 };
-
-const initialState: AuthState = {
-    isAuthenticated: getTokenFromLocalStorage() ,
-    userData : {
+const getDataFromLocalStorage= (): any =>{
+   if( localStorage.getItem('user')===null){
+    return {
+      userId : "",
       username : "",
       email : "",
       post : [],
@@ -36,6 +37,18 @@ const initialState: AuthState = {
       accountCreated : 0,
       profilePic : "",
   }
+
+  }
+  const userJsonString = localStorage.getItem('user');
+  const user = userJsonString ? JSON.parse(userJsonString) : null;
+
+  
+    return user;
+    
+}
+const initialState: AuthState = {
+    isAuthenticated: getTokenFromLocalStorage() ,
+    userData : getDataFromLocalStorage()
   
 };
 
@@ -50,6 +63,7 @@ const authSlice = createSlice({
     logout  : (state) =>{
         state.isAuthenticated = false;
         state.userData =  {
+            userId : "",
             username : "",
             email : "",
             post : [],

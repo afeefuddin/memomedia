@@ -30,6 +30,7 @@ function LoginComponent(props: any) {
          if(LoginMutate.isSuccess){
             updateState(LoginMutate,dispatch)
             localStorage.setItem("jwt_token_id",LoginMutate.data.auth)
+            localStorage.setItem("user", JSON.stringify(LoginMutate.data?.userData))
           }
            
       },[LoginMutate])

@@ -4,7 +4,47 @@ import Emoji from "./Emoji"
 import Comment from './CommentIcon'
 import ShareIcon from "./ShareIcon"
 
+import { useEffect, useState } from "react"
+import { useIsLiked } from "../api/api"
+import { useSelector } from "react-redux"
+
+import { updateLike } from "../api/api"
+
+
+
+
+
+
 function Post(props:any) {
+  const userId =  useSelector((state:any)=>state.auth.userData._id);
+  const likePost =  updateLike(userId,props.items._id)
+  function LikeThePost(){
+    setLiked((prev)=>!prev);
+    likePost.mutate();
+   
+  }
+  const [liked,setLiked] = useState(false)
+  const [likedAlready, setLikedAlready] = useState(false);
+  const res = useIsLiked(userId, props.items._id);
+  useEffect(()=>{
+    if(res.data?.isLiked===true){
+    setLiked(true);
+    setLikedAlready(true)
+    }
+    console.log(res.data)
+
+  },[res.data])
+  const fetchIsLiked : (userId:string,postId:string)=> any = async (userId:string,postId:string) =>{
+    console.log('Like')
+    if(res.data?.isLiked){
+      setLikedAlready(true);
+      setLiked(true);
+    }
+  }
+  useEffect(()=>{
+    console.log(userId)
+    fetchIsLiked(userId,props.items._id)
+  },[])
   return (
     <div className="w-fit" style={{background : 'var(--secondary-bg-color)'}}>
         <div className='flex flex-col justify-center '>
@@ -17,10 +57,11 @@ function Post(props:any) {
             <div className="ml-2 mt-2 mb-2">{props.items.caption}</div>
             <div className=""><LoadingImage height="200px"/></div>
             <div className='grid grid-cols-3'>
-                <div className="m-auto flex flex-row" onClick={props.items.like}><Emoji/> </div>
+                <div className="m-auto flex flex-row" onClick={LikeThePost}><Emoji liked={likedAlready}/> </div>
                 <div className="m-auto flex flex-row" onClick={props.openComment}><Comment /><span className="ml-2 mt-1 font-poppins">Comment</span></div>
                 <div className="m-auto flex flex-row" onClick={props.copyLink}><ShareIcon /><span className="ml-2 mt-1 font-poppins">Share</span></div>
             </div>
+            <div className="ml-4 mt-2 flex flex-row" onClick={props.items.like}>{!likedAlready && liked ? <div>{props.items.likes.length+1}</div> : <div>{props.items.likes.length}</div>}Likes</div>
             <div className="ml-4 mt-2 mb-2" onClick={props.openComment}>Add a comment...</div>
         </div>
     </div>
