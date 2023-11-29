@@ -6,6 +6,7 @@ import NavigationIcons from './NavigationIcons'
 import image from '../assets/vk.jpeg'
 import { useDispatch } from 'react-redux'
 import { setTheme } from '../theme/themeSlice'
+import { setOpen } from '../Store/profileSlice'
 
 function HomeHeader() {
     const currentTheme = useSelector((state:any)=>state.theme.currentTheme)
@@ -20,6 +21,9 @@ function HomeHeader() {
 
       }
     } 
+    const handleProfileToggle : () => any = () =>{
+      dispatch(setOpen())
+    }
   return (
     <div style={{background : 'var(--secondary-bg-color)'}}>
         <div className='grid xl:grid-cols-3 grid-cols-4  p-3'>
@@ -40,7 +44,7 @@ function HomeHeader() {
 
 
             }</div>
-          <div>
+          <div onClick={handleProfileToggle}>
             <img className='w-12 rounded-full' src={image} alt="" />
           </div>
         </div>
