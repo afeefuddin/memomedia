@@ -7,7 +7,7 @@ import ShareIcon from "./ShareIcon"
 import { useEffect, useState } from "react"
 import { useIsLiked } from "../api/api"
 import { useSelector } from "react-redux"
-
+import axios from "axios"
 import { updateLike } from "../api/api"
 
 
@@ -21,30 +21,48 @@ function Post(props:any) {
   function LikeThePost(){
     setLiked((prev)=>!prev);
     likePost.mutate();
-   
   }
   const [liked,setLiked] = useState(false)
   const [likedAlready, setLikedAlready] = useState(false);
-  const res = useIsLiked(userId, props.items._id);
-  useEffect(()=>{
-    if(res.data?.isLiked===true){
-    setLiked(true);
-    setLikedAlready(true)
+  const isLiked = async (userId:string,postId:string) => {
+    const headers = {
+      
+      userId : userId,
+      postId : postId,
     }
-    console.log(res.data)
+      console.log(headers);
+      try{
+        const response = await axios.get(import.meta.env.VITE_API_LINK+'posts/hasLiked', {
+          headers:headers,
+        })
+        const data = await response.data;
+        if(data){
+          setLikedAlready(data.isLiked)
+        }
+      }
+      catch(error){
+        console.log(error)
+      }
+  
+  };
 
-  },[res.data])
-  const fetchIsLiked : (userId:string,postId:string)=> any = async (userId:string,postId:string) =>{
-    console.log('Like')
-    if(res.data?.isLiked){
-      setLikedAlready(true);
-      setLiked(true);
-    }
-  }
   useEffect(()=>{
-    console.log(userId)
-    fetchIsLiked(userId,props.items._id)
+    isLiked(userId,props.items._id)
+
   },[])
+
+  // const fetchIsLiked : (userId:string,postId:string)=> any = async (userId:string,postId:string) =>{
+  //   console.log('Like')
+  //   if(res.data?.isLiked){
+  //     setLikedAlready(true);
+  //     setLiked(true);
+  //   }
+  // }
+
+  // useEffect(()=>{
+  //   console.log(userId)
+  //   fetchIsLiked(userId,props.items._id)
+  // },[])
   return (
     <div className="w-fit" style={{background : 'var(--secondary-bg-color)'}}>
         <div className='flex flex-col justify-center '>

@@ -59,4 +59,15 @@ async function  addPostToUser(postID:Types.ObjectId,userId:Types.ObjectId) {
         return false
     }
 }
-export {addUser, isUserPresent,isValidDetails,addPostToUser}
+async function getUserDatafromDB(username:string) {
+    try{
+        console.log(username)
+        const res =  await User.findOne({username : username});
+        return res;
+    }
+    catch(error){
+        return null;
+    }
+}
+
+export {addUser, isUserPresent,isValidDetails,addPostToUser,getUserDatafromDB}

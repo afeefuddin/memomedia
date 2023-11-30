@@ -60,5 +60,20 @@ const updateLike = (userId:string, postId : string)=>{
   })
 
 }
+//Profile Page
+const userDetails = async (username: string) =>{
+  const response = await axios.get(api_link + `users/profile/${username}`);
+  const data = await response.data;
+  return data;
+}
 
-export  {useLogin,handleLogin,useIsLiked,updateLike};
+const getUserDetails = (username : string)=>{
+  console.log(username + "Here")
+  return useQuery({
+    queryKey: ['isLiked'],
+   queryFn :()=> userDetails(username),
+   refetchOnWindowFocus :false,
+  retry:false})
+}
+
+export  {useLogin,handleLogin,useIsLiked,updateLike,getUserDetails};

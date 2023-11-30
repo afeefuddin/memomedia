@@ -23,4 +23,6 @@ async function likePost(req:Request,res:Response) {
         res.sendStatus(500);
     }
 }
+
+
 export {likePost}

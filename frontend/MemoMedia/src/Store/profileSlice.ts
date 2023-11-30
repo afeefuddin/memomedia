@@ -12,5 +12,6 @@ const profileSlice = createSlice({
     }
 })
 
+
 export const { setOpen } = profileSlice.actions;
 export default profileSlice.reducer;

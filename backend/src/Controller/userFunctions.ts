@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { isValidDetails } from "../Database/userHandler";
+import { isValidDetails,getUserDatafromDB } from "../Database/userHandler";
 import { generateWebTokens } from "../Middleware/auth";
-import { getIfUserHasLiked } from "../Database/PostHandler";
+import { getIfUserHasLiked, getusersPostFromDb } from "../Database/PostHandler";
 
 async function loginUser(req:Request,res:Response) {
     const loginData = req.body;
@@ -43,7 +43,7 @@ async function loginUser(req:Request,res:Response) {
 async function userHasLiked(req:Request, res:Response){
   const userId = req.headers.userid;
   const postId = req.headers.postid;
-  console.log(userId)
+  console.log(userId + "yes")
   if(!userId || !postId){
     res.sendStatus(401);
         return;
@@ -56,4 +56,61 @@ async function userHasLiked(req:Request, res:Response){
     res.status(200).json({isLiked : false});
   }
 }
-export {loginUser,userHasLiked};
+
+async function getUserDetails(req:Request,res:Response) {
+    const username = req.params.username;
+    console.log(username)
+    try{
+      const response =  await getUserDatafromDB(username);
+      if(response){
+
+        const {
+          _id,
+          username,
+          email,
+          profilePic,
+          post,
+          follower,
+          following,
+          accountCreated,
+        } = response;
+      
+        
+        try{
+          const PostsData = await getusersPostFromDb(post);
+          if(PostsData){
+            const dataToSend = {
+              _id,
+              username,
+              email,
+              profilePic,
+              PostsData,
+              follower,
+              following,
+              accountCreated,
+            };
+
+            res.status(200).json({dataToSend});
+          }
+          else{
+            res.sendStatus(404);
+          }
+        }
+        catch(error){
+          res.status(404).json({"Error":"Fetching the posts"});
+          return
+        }
+
+
+      }
+      else{
+        res.status(404).json({'error' : 'user not found' });
+        
+      }
+    }
+    catch{
+      res.sendStatus(404);
+    }
+}
+
+export {loginUser,userHasLiked,getUserDetails};

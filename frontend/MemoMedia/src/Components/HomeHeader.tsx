@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux'
 import { setTheme } from '../theme/themeSlice'
 import { setOpen } from '../Store/profileSlice'
 
-function HomeHeader() {
+function HomeHeader({profile}) {
     const currentTheme = useSelector((state:any)=>state.theme.currentTheme)
     const dispatch = useDispatch();
     const handleTheme : () => any = () =>{
@@ -44,9 +44,10 @@ function HomeHeader() {
 
 
             }</div>
-          <div onClick={handleProfileToggle}>
+        { profile!=='true' && <div onClick={handleProfileToggle}>
             <img className='w-12 rounded-full' src={image} alt="" />
           </div>
+          }
         </div>
         </div>
     </div>

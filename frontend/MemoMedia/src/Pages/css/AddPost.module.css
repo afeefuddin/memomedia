@@ -1,0 +1,10 @@
+.addPostBg{
+    background-color:rgba(52,58,70,.8);
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    z-index: 9;
+}

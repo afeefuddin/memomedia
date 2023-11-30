@@ -17,6 +17,18 @@ async function getPostFromDb(page:number,pageSize:number){
         return null;
     }
 }
+//Get a list of post from db for profile page
+async function getusersPostFromDb(postList:any){
+    try{
+       const Posts=  Post.find({ _id: { $in: postList } });
+       return Posts
+    }
+    catch(error){
+        console.log(error.message);
+        return null;
+    }
+}
+
 
 //create post of the user
 async function addPostinDB(postBody: Ipost){
@@ -105,4 +117,4 @@ async function getIfUserHasLiked(userId: any, postId: any) {
     return false;
   }
 
-export {getPostFromDb,addPostinDB,getIfUserHasLiked,addLikeInthePost}
+export {getPostFromDb,addPostinDB,getIfUserHasLiked,addLikeInthePost,getusersPostFromDb}

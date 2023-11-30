@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import Login from './Pages/Login';
 import Home from './Pages/Home';
 import { Router, Routes, Route } from 'react-router';
+import ProfilePage from './Pages/ProfilePage';
+import AddPost from './Pages/AddPost';
 
 
 
@@ -20,6 +22,8 @@ function App() {
 
     <Theme appearance={curTheme}>
      <Home />
+     {/* <ProfilePage /> */}
+     <AddPost />
 
     </Theme>
     </div>

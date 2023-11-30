@@ -3,6 +3,7 @@ import themeSlice from "../theme/themeSlice";
 import authSlice from "../auth/authSlice";
 import tabSlice from "./tabSlice";
 import profileSlice from "./profileSlice";
+import addPostSlice from './addPostSlice'
 
 const store = configureStore({
     reducer : {
@@ -10,6 +11,7 @@ const store = configureStore({
         theme : themeSlice,
         curtab : tabSlice,
         profile : profileSlice,
+        addpost : addPostSlice,
         
     }
 })
