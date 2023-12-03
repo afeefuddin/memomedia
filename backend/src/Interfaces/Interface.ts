@@ -9,7 +9,7 @@ interface IComment {
 }
 interface Ipost {
     caption : string;
-    pitcure : string;
+    picture : string;
     userId : Types.ObjectId;
     date? : number;
     likes? : Types.ObjectId[];

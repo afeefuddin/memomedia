@@ -17,6 +17,19 @@ async function getPostFromDb(page:number,pageSize:number){
         return null;
     }
 }
+
+//Get the size of post in the db 
+async function getSizeofPost() {
+    
+    try{
+        const size = await Post.countDocuments();
+        return size;
+    }
+    catch(error){
+        console.log(error)
+    }
+}
+
 //Get a list of post from db for profile page
 async function getusersPostFromDb(postList:any){
     try{
@@ -32,11 +45,11 @@ async function getusersPostFromDb(postList:any){
 
 //create post of the user
 async function addPostinDB(postBody: Ipost){
-    console.log("reacherd");
+    console.log(postBody);
     try{
         const curPost = new Post({
             caption: postBody.caption,
-            pitcure: postBody.pitcure,
+            picture: postBody.picture,
             userId: postBody.userId,
           });
           try{
@@ -117,4 +130,4 @@ async function getIfUserHasLiked(userId: any, postId: any) {
     return false;
   }
 
-export {getPostFromDb,addPostinDB,getIfUserHasLiked,addLikeInthePost,getusersPostFromDb}
+export {getPostFromDb,getSizeofPost,addPostinDB,getIfUserHasLiked,addLikeInthePost,getusersPostFromDb}

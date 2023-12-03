@@ -8,7 +8,7 @@ const PostSchema = new mongoose.Schema<Ipost>({
         required : false,
         default: ""
     },
-    pitcure : {
+    picture : {
         type: String,
         required : true,
     },

@@ -16,6 +16,7 @@ import { updateLike } from "../api/api"
 
 
 function Post(props:any) {
+  console.log(props.items)
   const userId =  useSelector((state:any)=>state.auth.userData._id);
   const likePost =  updateLike(userId,props.items._id)
   function LikeThePost(){
@@ -64,7 +65,7 @@ function Post(props:any) {
   //   fetchIsLiked(userId,props.items._id)
   // },[])
   return (
-    <div className="w-fit" style={{background : 'var(--secondary-bg-color)'}}>
+    <div className="w-fit mb-4" style={{background : 'var(--secondary-bg-color)'}}>
         <div className='flex flex-col justify-center '>
             <div className='flex flex-row items-center'>
                 <div className="w-12 h-12 flex justify-center ml-2 mt-2 items-center"><img className="rounded-full h-12 w-12" src={Image} alt="" /></div>
@@ -73,7 +74,7 @@ function Post(props:any) {
                 <div className="ml-2 font-lato">1h</div>
             </div>
             <div className="ml-2 mt-2 mb-2">{props.items.caption}</div>
-            <div className=""><LoadingImage height="200px"/></div>
+            <div className=""><img src={props.items.picture} alt="" className="h-48" /></div>
             <div className='grid grid-cols-3'>
                 <div className="m-auto flex flex-row" onClick={LikeThePost}><Emoji liked={likedAlready}/> </div>
                 <div className="m-auto flex flex-row" onClick={props.openComment}><Comment /><span className="ml-2 mt-1 font-poppins">Comment</span></div>

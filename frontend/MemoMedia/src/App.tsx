@@ -18,15 +18,16 @@ function App() {
      console.log(curTheme)
   return (
     <>
-    <div className={curTheme}>
-
-    <Theme appearance={curTheme}>
-     <Home />
-     {/* <ProfilePage /> */}
-     <AddPost />
-
-    </Theme>
-    </div>
+       
+      <div className={curTheme}>
+        <Theme appearance={curTheme}>
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/:username' element={<ProfilePage />} />
+            </Routes>
+        </Theme>
+      </div>
+         
     </>
   )
 }
