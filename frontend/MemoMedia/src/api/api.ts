@@ -18,6 +18,27 @@ const useLogin = (username: string, password: string) => {
     mutationFn: () => handleLogin(username, password)
   });
 };
+
+const sendOTP= async(username: string, email : string) =>{
+  const response = await axios.post(api_link + 'signup/sendOTP',{
+    username : username,
+    email : email
+  })
+  return response.data;
+}
+
+
+const createUser= async(username: string, email : string , password : string,otp :string|undefined) =>{
+  const response = await axios.post(api_link + 'signup',{
+    username : username,
+    email : email,
+    password : password,
+    Otp : otp
+  })
+  return response.data;
+}
+
+
 const isLiked = async (userId:string,postId:string) => {
   const headers = {
     userId : userId,
@@ -76,4 +97,4 @@ const getUserDetails = (username : string)=>{
   retry:false})
 }
 
-export  {useLogin,handleLogin,useIsLiked,updateLike,getUserDetails};
+export  {useLogin,handleLogin,useIsLiked,updateLike,getUserDetails,createUser,sendOTP};

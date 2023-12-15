@@ -8,6 +8,7 @@ import { useLogin,handleLogin } from '../api/api'
 import { login, logout } from '../auth/authSlice'
 import { useMutation } from '@tanstack/react-query'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router'
 
 const { container, inputbox } = styles
 
@@ -20,6 +21,7 @@ function LoginComponent(props: any) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const curTheme = useSelector((state: any) => state.theme.currentTheme);
+    const Navigate = useNavigate()
     const dispatch = useDispatch()
     
     const LoginMutate = useMutation({
@@ -53,7 +55,7 @@ function LoginComponent(props: any) {
                         <div className='text-sm'>OR</div>
                         <div className='h-px bg-gray-700 w-20'></div>
                     </div>
-                    <div className='text-sm text-center mt-2'>Dont have an account? <span className='text-base text-blue-500 cursor-pointer'>SignUp</span></div>
+                    <div className='text-sm text-center mt-2'>Dont have an account? <span className='text-base text-blue-500 cursor-pointer' onClick={()=>Navigate('/signup')}>SignUp</span></div>
                 </div>
             </Flex>
             

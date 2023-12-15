@@ -10,6 +10,7 @@ import { setOpen } from '../Store/profileSlice'
 
 function HomeHeader({profile}) {
     const currentTheme = useSelector((state:any)=>state.theme.currentTheme)
+    const pfp =  useSelector((state:any)=>state.auth.userData.profilePic)
     const dispatch = useDispatch();
     const handleTheme : () => any = () =>{
       if(currentTheme==='light'){
@@ -45,7 +46,7 @@ function HomeHeader({profile}) {
 
             }</div>
         { profile!=='true' && <div onClick={handleProfileToggle}>
-            <img className='w-12 rounded-full' src={image} alt="" />
+            <img className='w-12 rounded-full' src={pfp} alt="" />
           </div>
           }
         </div>

@@ -6,6 +6,9 @@ import HomeHeader from '../Components/HomeHeader';
 import SidePanel from '../Components/SidePanel';
 import { useSelector } from 'react-redux';
 import usePostSearch from '../Hooks/usePostSearch';
+import { useDispatch } from 'react-redux';
+import { logout } from '../auth/authSlice';
+import { useNavigate } from 'react-router';
 
 
 function HomeFeed() {
@@ -13,7 +16,8 @@ function HomeFeed() {
 
     const [page,setPage] = useState(0);
     const {loading,error,posts,hasMore} = usePostSearch(page)
-
+    const Navigate = useNavigate()
+    const dispatch = useDispatch();
     const lastPost = useRef();
     const fetchItems = useCallback((node)=>{
       if(loading) return;
@@ -26,19 +30,23 @@ function HomeFeed() {
       }) 
       if(node) lastPost.current?.observe(node)
     },[loading,hasMore]);
-
+    const handleLogout = () =>{
+      localStorage.clear()
+     dispatch(logout())
+    }
+    const username = useSelector((state:any) => state.auth.userData.username)
   return (
     <div className='h-full' style={{background : 'var(--primary-bg-color)'}}>
       <HomeHeader />
       <div>
         { isProfileToggleOpen && 
           <div className=' absolute right-2 mt-2 text-lg w-40 p-2 rounded'  style={{background : 'var(--secondary-bg-color)'}}>
-        <div className='p-2'>View Profile</div>
-        <div className='p-2'>Logout</div>
+        <div className='p-2' onClick={()=>Navigate('user/'+username)}>View Profile</div>
+        <div className='p-2' onClick={handleLogout}>Logout</div>
       </div>
       }
       </div>
-      <div className='flex flex-row justify-center'>
+      <div className='flex flex-row justify-center min-h-screen'>
         <div className='flex flex-row'>
           <div className='mt-4 flex flex-col justify-center'>
           <div>{posts && posts?.map((item:any,index:any)=>{

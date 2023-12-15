@@ -7,13 +7,15 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import Post from '../Components/Post'
 import { getUserDetails } from '../api/api'
+import { useParams } from 'react-router'
 
 function ProfilePage() {
     const isLoggedIn = true;
     const isUser = true
+    const {username} = useParams()
     const [userData, setUserData] = useState({});
     // const {isError,data} = getUserDetails('afeefuddin')
-    const fetchApi:()=>any = async(username : string) => {
+    const fetchApi:(username : string)=>any = async(username : string) => {
        
         try{
             let res = await axios.get(`http://localhost:8000/api/users/profile/${username}`);
@@ -29,14 +31,14 @@ function ProfilePage() {
     }
     useEffect(()=>{
        
-        fetchApi('afeefuddin')
+        fetchApi(username)
     },[])
   return (
     <div className='h-full' style={{background : 'var(--primary-bg-color)'}}>
         <div><HomeHeader profile='true' /></div>
         <div className='flex flex-row gap-6'>
             <div className='mt-4 mb-4 ml-4 p-4 h-fit w-fit flex flex-col items-center ' style={{background : 'var(--secondary-bg-color)'}}>
-                <div><img className='h-36 rounded-full' src={Image} alt="" /></div>
+                <div><img className='h-36 rounded-full' src={userData?.profilePic} alt="" /></div>
                 <div className='text-lg text-center mt-4 mb-4'>{userData?.username}</div>
                 {isLoggedIn && isUser && <Button className='ml-auto mr-auto mt-2 mb-4'>Update Profile Pic</Button>}
                 {isLoggedIn && !isUser && <Button>Follow</Button>}

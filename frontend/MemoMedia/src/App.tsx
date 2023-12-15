@@ -7,6 +7,8 @@ import Home from './Pages/Home';
 import { Router, Routes, Route } from 'react-router';
 import ProfilePage from './Pages/ProfilePage';
 import AddPost from './Pages/AddPost';
+import Signup from './Pages/Signup';
+import PrivateRoute from './Components/PrivateRoute';
 
 
 
@@ -23,7 +25,18 @@ function App() {
         <Theme appearance={curTheme}>
             <Routes>
               <Route path='/' element={<Home />} />
-              <Route path='/:username' element={<ProfilePage />} />
+              <Route path='/user/:username' element={<ProfilePage />} />
+              
+              <Route path='/signup' element={
+              <PrivateRoute>
+              <Signup />
+              </PrivateRoute>
+              } />
+              <Route path='/login' element={
+              <PrivateRoute>
+              <Login />
+              </PrivateRoute>
+              } />
             </Routes>
         </Theme>
       </div>

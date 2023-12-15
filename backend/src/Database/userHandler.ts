@@ -6,11 +6,18 @@ import { Types } from "mongoose";
 
 async function addUser(userData :Inewuser){
     try{
+        let pfpUrl = ''
+        if(userData.profilePic){
+            pfpUrl = 'https://res.cloudinary.com/dezzqucfl/image/upload/v1702646889/1000_F_410437733_hdq4Q3QOH9uwh0mcqAhRFzOKfrCR24Ta_htpstb.jpg'
+        }
+        else{
+            pfpUrl = 'https://res.cloudinary.com/dezzqucfl/image/upload/v1702646889/1000_F_410437733_hdq4Q3QOH9uwh0mcqAhRFzOKfrCR24Ta_htpstb.jpg' 
+        }
         const newUser = new User({
             username : userData.username,
             password : userData.password,
             email : userData.email,
-            profilePic : userData.profilePic,
+            profilePic : pfpUrl,
         })
         newUser.save();
         return true;

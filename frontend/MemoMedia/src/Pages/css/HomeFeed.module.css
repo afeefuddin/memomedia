@@ -1,3 +1,7 @@
+
+.container{
+    min-height: 90vh;
+}
 .gridContainer{
     display: grid;
     grid-template-columns: 2fr 4fr 1fr;

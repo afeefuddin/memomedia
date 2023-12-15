@@ -4,7 +4,9 @@ import { generateWebTokens } from "../Middleware/auth";
 import { getIfUserHasLiked, getusersPostFromDb } from "../Database/PostHandler";
 
 async function loginUser(req:Request,res:Response) {
+  try{
     const loginData = req.body;
+    console.log(loginData.password)
     console.log('here')
     let isCorrect: any = await isValidDetails(loginData);
     if(!isCorrect){
@@ -37,7 +39,11 @@ async function loginUser(req:Request,res:Response) {
 
     const token = generateWebTokens(loginData.username);
     res.status(200).json({auth : token, userData : dataToSend });
-
+    }
+    catch(error){
+      console.log(error.message)
+      res.status(500).json({error})
+    }
 }
 
 async function userHasLiked(req:Request, res:Response){

@@ -16,7 +16,6 @@ import { updateLike } from "../api/api"
 
 
 function Post(props:any) {
-  console.log(props.items)
   const userId =  useSelector((state:any)=>state.auth.userData._id);
   const likePost =  updateLike(userId,props.items._id)
   function LikeThePost(){
