@@ -9,6 +9,7 @@ import usePostSearch from '../Hooks/usePostSearch';
 import { useDispatch } from 'react-redux';
 import { logout } from '../auth/authSlice';
 import { useNavigate } from 'react-router';
+import LoadingImage from '../Components/LoadingImage';
 
 
 function HomeFeed() {
@@ -19,6 +20,9 @@ function HomeFeed() {
     const Navigate = useNavigate()
     const dispatch = useDispatch();
     const lastPost = useRef();
+    const firstPost = useRef();
+    const isAddPost = useSelector((state:any)=>state.addpost.isOpen)
+ 
     const fetchItems = useCallback((node)=>{
       if(loading) return;
       if(lastPost.current) lastPost.current.disconnect()
@@ -36,7 +40,7 @@ function HomeFeed() {
     }
     const username = useSelector((state:any) => state.auth.userData.username)
   return (
-    <div className='h-full' style={{background : 'var(--primary-bg-color)'}}>
+    <div className={`${isAddPost? 'h-screen overflow-hidden':'h-full'}`} style={{background : 'var(--primary-bg-color)'}}>
       <HomeHeader />
       <div>
         { isProfileToggleOpen && 
@@ -45,10 +49,14 @@ function HomeFeed() {
         <div className='p-2' onClick={handleLogout}>Logout</div>
       </div>
       }
+
       </div>
-      <div className='flex flex-row justify-center min-h-screen'>
+      <div></div>
+      <div className={`flex flex-row justify-center min-h-screen`} >
         <div className='flex flex-row'>
           <div className='mt-4 flex flex-col justify-center'>
+            {/* <div><Post items={}/></div> */}
+            {/* <div className='w-fit h-8 m-auto'><div className='text-center font-inter text-blue-700 cursor-pointer'onClick={}>Refresh</div></div> */}
           <div>{posts && posts?.map((item:any,index:any)=>{
             if(index+1===posts.length){
               return  <div ref={fetchItems}> <Post key={item} items = {item} /> </div>
@@ -56,6 +64,15 @@ function HomeFeed() {
            return <div> <Post key={item} items = {item} /> </div>
             
            } )}
+           {loading && <div>
+            <div  className='mb-4 w-80'>
+            
+            <LoadingImage  />
+            </div>
+            <div className='mb-2 w-80'>
+            <LoadingImage />
+            </div>
+            </div>}
           </div>
             {hasMore && <div>Loading</div>}
           </div>

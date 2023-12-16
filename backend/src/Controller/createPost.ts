@@ -15,6 +15,7 @@ async function createPost(req: Request,res:Response){
             caption : postBody.caption,
             picture : img_url,
             userId : postBody.userId,
+            username : postBody.username
         }
         console.log(postBodyModified);
         const Post = await addPostinDB(postBodyModified);

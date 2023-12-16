@@ -76,5 +76,13 @@ async function getUserDatafromDB(username:string) {
         return null;
     }
 }
+async function getUserProfilePicfromDb(userId : string) {
+    try {
+        const res = await User.findById(userId).select('profilePic')
+        return res
+    } catch (error) {
+        return null
+    }
+}
 
-export {addUser, isUserPresent,isValidDetails,addPostToUser,getUserDatafromDB}
+export {addUser, isUserPresent,isValidDetails,addPostToUser,getUserDatafromDB,getUserProfilePicfromDb}

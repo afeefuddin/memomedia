@@ -9,38 +9,45 @@ import ProfilePage from './Pages/ProfilePage';
 import AddPost from './Pages/AddPost';
 import Signup from './Pages/Signup';
 import PrivateRoute from './Components/PrivateRoute';
+import PostPage from './Pages/PostPage';
+import AuthRoute from './Components/AuthRoute';
 
 
 
 
 function App() {
 
-  
-    const curTheme =useSelector((state : any) => state.theme.currentTheme);
-     console.log(curTheme)
+
+  const curTheme = useSelector((state: any) => state.theme.currentTheme);
+  console.log(curTheme)
   return (
     <>
-       
+
       <div className={curTheme}>
         <Theme appearance={curTheme}>
-            <Routes>
-              <Route path='/' element={<Home />} />
-              <Route path='/user/:username' element={<ProfilePage />} />
-              
-              <Route path='/signup' element={
+          <AddPost />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/user/:username' element={<ProfilePage />} />
+            <Route path='post/:postid' element={
+              <AuthRoute >
+                <PostPage />
+              </AuthRoute>
+            } />
+            <Route path='/signup' element={
               <PrivateRoute>
-              <Signup />
+                <Signup />
               </PrivateRoute>
-              } />
-              <Route path='/login' element={
+            } />
+            <Route path='/login' element={
               <PrivateRoute>
-              <Login />
+                <Login />
               </PrivateRoute>
-              } />
-            </Routes>
+            } />
+          </Routes>
         </Theme>
       </div>
-         
+
     </>
   )
 }

@@ -2,14 +2,16 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { setAddPost } from '../Store/addPostSlice';
+import { useNavigate } from 'react-router';
 
 function NavigationIcons() {
     const currentTheme = useSelector((state:any)=>state.theme.currentTheme)
     const dispatch = useDispatch();
     const curTab = useSelector((state:any)=>state.curtab.activetab)
+    const Navigate = useNavigate()
   return (
     <div className='flex flex-row gap-2'>
-        <div className='m-auto flex flex-col text-sm items-center cursor-pointer'>
+        <div className='m-auto flex flex-col text-sm items-center cursor-pointer' onClick={()=>Navigate('/')}>
         <svg width="32" height="32" viewBox="0 0 316 316" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M131.655 249.524V183.952H184.113V249.524C184.113 256.737 190.014 262.639 197.227 262.639H236.571C243.784 262.639 249.685 256.737 249.685 249.524V157.723H271.98C278.012 157.723 280.898 150.248 276.308 146.314L166.671 47.5615C161.687 43.1026 154.081 43.1026 149.097 47.5615L39.4601 146.314C35.0012 150.248 37.7552 157.723 43.7879 157.723H66.0825V249.524C66.0825 256.737 71.984 262.639 79.1969 262.639H118.54C125.753 262.639 131.655 256.737 131.655 249.524Z" fill={currentTheme==='light'?'black' : 'white' }/>
 </svg>

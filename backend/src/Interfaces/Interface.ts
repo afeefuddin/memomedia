@@ -11,9 +11,11 @@ interface Ipost {
     caption : string;
     picture : string;
     userId : Types.ObjectId;
+    username : string
     date? : number;
     likes? : Types.ObjectId[];
     comments? : Types.ObjectId[];
+    profilePic? : any
 
 }
 interface Iuser {

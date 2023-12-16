@@ -1,16 +1,30 @@
 import { Post } from "../Model/PostSchema"
 import { Ipost } from "../Interfaces/Interface";
-import { addPostToUser } from "./userHandler";
+import { addPostToUser, getUserProfilePicfromDb } from "./userHandler";
 import { Types } from "mongoose";
 
 // Get N posts from DB for the feed
 async function getPostFromDb(page:number,pageSize:number){
     try{
-        const Posts = await Post.find().sort({date:1})
+        let Posts = await Post.find().sort({date:-1})
             .limit(pageSize)
             .skip((page)*pageSize)
+            .lean()
             .exec();
-            return Posts;
+            console.log(Posts)
+            const allPost = []
+            for(let i=0;i<Posts.length;i++){
+                let post = Posts[i];
+                const pfp = await getUserProfilePicfromDb(post.userId.toString())
+                const curPost = {
+                    ...post,
+                    profilePic : pfp.profilePic
+                }
+                allPost.push(curPost)
+                
+            }
+            console.log(allPost)
+            return allPost;
     }
     catch(error){
         console.log(error.message);
@@ -51,6 +65,8 @@ async function addPostinDB(postBody: Ipost){
             caption: postBody.caption,
             picture: postBody.picture,
             userId: postBody.userId,
+            username : postBody.username,
+            date : Date.now()
           });
           try{
               const PostInUser = await addPostToUser(curPost._id,postBody.userId);  

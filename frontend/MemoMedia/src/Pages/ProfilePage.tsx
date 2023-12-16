@@ -34,7 +34,7 @@ function ProfilePage() {
         fetchApi(username)
     },[])
   return (
-    <div className='h-full' style={{background : 'var(--primary-bg-color)'}}>
+    <div className='h-full min-h-screen' style={{background : 'var(--primary-bg-color)'}}>
         <div><HomeHeader profile='true' /></div>
         <div className='flex flex-row gap-6'>
             <div className='mt-4 mb-4 ml-4 p-4 h-fit w-fit flex flex-col items-center ' style={{background : 'var(--secondary-bg-color)'}}>

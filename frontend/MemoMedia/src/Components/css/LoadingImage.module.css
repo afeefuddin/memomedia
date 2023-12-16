@@ -3,7 +3,8 @@ body {
   }
   
   .skeleton {
-    width: 450px;
+    width: 100%;
+    max-width: 450px;
     height: 350px;
     animation: skeleton-loading 1s linear infinite alternate;
     border-radius: 10px;
