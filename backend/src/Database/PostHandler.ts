@@ -1,32 +1,31 @@
 import { Post } from "../Model/PostSchema"
 import { Ipost } from "../Interfaces/Interface";
 import { addPostToUser, getUserProfilePicfromDb } from "./userHandler";
-import { Types } from "mongoose";
 
 // Get N posts from DB for the feed
-async function getPostFromDb(page:number,pageSize:number){
-    try{
-        let Posts = await Post.find().sort({date:-1})
+async function getPostFromDb(page: number, pageSize: number) {
+    try {
+        let Posts = await Post.find().sort({ date: -1 })
             .limit(pageSize)
-            .skip((page)*pageSize)
+            .skip((page) * pageSize)
             .lean()
             .exec();
-            console.log(Posts)
-            const allPost = []
-            for(let i=0;i<Posts.length;i++){
-                let post = Posts[i];
-                const pfp = await getUserProfilePicfromDb(post.userId.toString())
-                const curPost = {
-                    ...post,
-                    profilePic : pfp.profilePic
-                }
-                allPost.push(curPost)
-                
+        console.log(Posts)
+        const allPost = []
+        for (let i = 0; i < Posts.length; i++) {
+            let post = Posts[i];
+            const pfp = await getUserProfilePicfromDb(post.userId.toString())
+            const curPost = {
+                ...post,
+                profilePic: pfp.profilePic
             }
-            console.log(allPost)
-            return allPost;
+            allPost.push(curPost)
+
+        }
+        console.log(allPost)
+        return allPost;
     }
-    catch(error){
+    catch (error) {
         console.log(error.message);
         return null;
     }
@@ -34,23 +33,33 @@ async function getPostFromDb(page:number,pageSize:number){
 
 //Get the size of post in the db 
 async function getSizeofPost() {
-    
-    try{
+
+    try {
         const size = await Post.countDocuments();
         return size;
     }
-    catch(error){
+    catch (error) {
         console.log(error)
     }
 }
 
 //Get a list of post from db for profile page
-async function getusersPostFromDb(postList:any){
-    try{
-       const Posts=  Post.find({ _id: { $in: postList } });
-       return Posts
+async function getusersPostFromDb(postList: any) {
+    try {
+        const Posts =await Post.find({ _id: { $in: postList } }).sort({ date: -1 }).lean();
+        const allPost = []
+        for(let i=0;i<Posts.length;i++){
+            const post = Posts[i]
+            const pfp = await getUserProfilePicfromDb(post.userId.toString())
+            const curPost = {
+                ...post,
+                profilePic: pfp.profilePic
+            }
+            allPost.push(curPost)
+        }
+            return allPost
     }
-    catch(error){
+    catch (error) {
         console.log(error.message);
         return null;
     }
@@ -58,65 +67,66 @@ async function getusersPostFromDb(postList:any){
 
 
 //create post of the user
-async function addPostinDB(postBody: Ipost){
+async function addPostinDB(postBody: Ipost) {
     console.log(postBody);
-    try{
+    try {
         const curPost = new Post({
             caption: postBody.caption,
             picture: postBody.picture,
             userId: postBody.userId,
-            username : postBody.username,
-            date : Date.now()
-          });
-          try{
-              const PostInUser = await addPostToUser(curPost._id,postBody.userId);  
-              if(!PostInUser){
-                return false;
-              } 
-            }
-            catch(error){
+            username: postBody.username,
+            date: Date.now()
+        });
+        try {
+            const PostInUser = await addPostToUser(curPost._id, postBody.userId);
+            if (!PostInUser) {
                 return false;
             }
-            curPost.save();
-          return true;
+        }
+        catch (error) {
+            return false;
+        }
+        curPost.save();
+        return true;
     }
-    catch(error){
+    catch (error) {
         return false;
     }
 
 }
 //add like to the post
-async function addLikeInthePost(postId:string,userId:string) {
-    try{
-        const hasLiked = await getIfUserHasLiked(userId,postId);
-        if(hasLiked){
-            return removeLikeInthePost(postId,userId)
+async function addLikeInthePost(postId: string, userId: string) {
+    try {
+        const hasLiked = await getIfUserHasLiked(userId, postId);
+        if (hasLiked) {
+            return removeLikeInthePost(postId, userId)
         }
     }
-    catch(error){
+    catch (error) {
         return false;
     }
-    try{
+    try {
         const post = await Post.findByIdAndUpdate(
             postId,
-            {$push : {likes : userId}},
+            { $push: { likes: userId } },
         )
-            console.log(post);
+        console.log(post);
     }
-    catch(error){
+    catch (error) {
         return false;
     }
     return true;
 }
-async function removeLikeInthePost(postId:string,userId:string) {
-    try{
+//remove the like from the post
+async function removeLikeInthePost(postId: string, userId: string) {
+    try {
         const post = await Post.findByIdAndUpdate(
             postId,
-            {$pull : {likes : userId}},
+            { $pull: { likes: userId } },
         )
 
     }
-    catch(error){
+    catch (error) {
         return false;
     }
     return true;
@@ -127,23 +137,43 @@ async function removeLikeInthePost(postId:string,userId:string) {
 
 async function getIfUserHasLiked(userId: any, postId: any) {
     try {
-    console.log(userId);
-    console.log(postId);
+        console.log(userId);
+        console.log(postId);
 
-    const post = await Post.findOne({ _id: postId, likes: { $in: [userId] } });
+        const post = await Post.findOne({ _id: postId, likes: { $in: [userId] } });
 
-    if (post) {
-      console.log(`User with ID ${userId} has liked this post.`);
-      return true;
-    } else {
-      console.log(`User with ID ${userId} has not liked this post.`);
-    }
-      console.log('Documents matching the search:');
+        if (post) {
+            console.log(`User with ID ${userId} has liked this post.`);
+            return true;
+        } else {
+            console.log(`User with ID ${userId} has not liked this post.`);
+        }
+        console.log('Documents matching the search:');
     } catch (error) {
-      console.error('Error executing the query:' );
+        console.error('Error executing the query:');
     }
-  
-    return false;
-  }
 
-export {getPostFromDb,getSizeofPost,addPostinDB,getIfUserHasLiked,addLikeInthePost,getusersPostFromDb}
+    return false;
+}
+
+//Get Single Post from PostId
+
+async function getPostfromIdfromDB(userId: string) {
+    try {
+        const post = await Post.findById(userId).lean()
+        if(!post){
+            return null
+        }
+        const pfp = await getUserProfilePicfromDb(post.userId.toString())
+            const curPost = {
+                ...post,
+                profilePic: pfp.profilePic
+            }
+            return curPost
+    } catch (error) {
+        console.log('Error Finding the Post from Database')
+        return null
+    }
+}
+
+export { getPostFromDb, getSizeofPost, addPostinDB, getIfUserHasLiked, addLikeInthePost, getusersPostFromDb, getPostfromIdfromDB }

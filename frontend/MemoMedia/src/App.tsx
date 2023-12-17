@@ -29,10 +29,8 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/user/:username' element={<ProfilePage />} />
-            <Route path='post/:postid' element={
-              <AuthRoute >
+            <Route path='post/:postId' element={   
                 <PostPage />
-              </AuthRoute>
             } />
             <Route path='/signup' element={
               <PrivateRoute>

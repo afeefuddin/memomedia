@@ -1,0 +1,9 @@
+.postContainer{
+    width: 500px;
+    height: 100%;
+    max-height: 500px;
+}
+.postBox{
+    min-height: 88vh;
+    position: relative;
+}

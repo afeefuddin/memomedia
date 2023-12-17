@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import HomeHeader from '../Components/HomeHeader'
 import { Button } from '@radix-ui/themes'
-import InfiniteScroll from 'react-infinite-scroller'
-import Image from '../assets/vk.jpeg'
-import { useInfiniteQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import Post from '../Components/Post'
-import { getUserDetails } from '../api/api'
 import { useParams } from 'react-router'
 
 function ProfilePage() {
     const isLoggedIn = true;
     const isUser = true
     const {username} = useParams()
-    const [userData, setUserData] = useState({});
+    const [userData, setUserData] = useState();
     // const {isError,data} = getUserDetails('afeefuddin')
     const fetchApi:(username : string)=>any = async(username : string) => {
        
@@ -33,6 +29,13 @@ function ProfilePage() {
        
         fetchApi(username)
     },[])
+    if(userData==null){
+        return (
+            <div className='h-screen flex items-center justify-center' style={{background : 'var(--primary-bg-color)'}}>
+                <div className='m-auto text-lg'>Loading...</div>
+            </div>
+        )
+    }
   return (
     <div className='h-full min-h-screen' style={{background : 'var(--primary-bg-color)'}}>
         <div><HomeHeader profile='true' /></div>

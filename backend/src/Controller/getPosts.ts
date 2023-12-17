@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getPostFromDb,getSizeofPost } from "../Database/PostHandler";
+import { getPostFromDb,getPostfromIdfromDB,getSizeofPost } from "../Database/PostHandler";
 
 async function getPosts(req:Request,res:Response){
     console.log("Hello")
@@ -24,4 +24,20 @@ async function getPosts(req:Request,res:Response){
         res.sendStatus(500);
     }
 }
-export {getPosts};
+async function getPostfromId(req:Request,res:Response){
+    try {
+        const id = req.params.postId;
+        console.log(id)
+        const post = await getPostfromIdfromDB(String(id))
+        console.log(post)
+
+        if(post!=null){
+            res.status(200).json({post})
+            return
+        }
+        res.status(404).json({'error' : 'Unable to find the post'})
+    } catch (error) {
+        res.status(500).json({'error': 'Internal Server Error'})
+    }
+}
+export {getPosts,getPostfromId};

@@ -1,7 +1,9 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const api_link = import.meta.env.VITE_API_LINK;
+const jwt_token_id = localStorage.getItem('jwt_token_id')
 
 const handleLogin = async (username: string, password: string) => {
     const response = await axios.post(api_link + 'login', {
@@ -97,4 +99,19 @@ const getUserDetails = (username : string)=>{
   retry:false})
 }
 
-export  {useLogin,handleLogin,useIsLiked,updateLike,getUserDetails,createUser,sendOTP};
+//Post Page
+const postForPostPage = async(userId : string) =>{
+  const response = await axios.get(api_link + `post/${userId}`)
+  const data = await response.data
+  return data
+}
+const getPostPage = (userId : string)=>{
+  return useQuery({
+    queryKey : ['postPage'],
+    queryFn : ()=> postForPostPage(userId),
+    refetchOnWindowFocus : false,
+    retry : false
+  })
+}
+
+export  {useLogin,handleLogin,useIsLiked,updateLike,getUserDetails,createUser,sendOTP,getPostPage};

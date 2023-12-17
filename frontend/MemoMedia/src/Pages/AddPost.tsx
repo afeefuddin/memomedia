@@ -1,6 +1,4 @@
-import React, { useState } from 'react'
-import * as Form from '@radix-ui/react-form';
-import HomeHeader from '../Components/HomeHeader';
+import  { useState } from 'react'
 import styles from './css/AddPost.module.css'
 import { setAddPost } from '../Store/addPostSlice';
 
@@ -13,6 +11,7 @@ import axios from 'axios';
 
 function AddPost() {
   const isOpen = useSelector((state:any)=> state.addpost.isOpen)
+  const isAuthenticated = useSelector((state:any)=>state.auth.isAuthenticated)
   const dispatch = useDispatch();
   const toggleAddPost = () =>{
     console.log('Here')
@@ -48,7 +47,7 @@ function AddPost() {
 
   return (
    <div >
-    { isOpen && <div className='fixed overflow-hidden'><div className={`${addPostBg} flex justify-center items-center`} onClick={toggleAddPost} onScroll={toggleAddPost}></div>
+    {isAuthenticated && isOpen && <div className='fixed overflow-hidden'><div className={`${addPostBg} flex justify-center items-center`} onClick={toggleAddPost} onScroll={toggleAddPost}></div>
   
       <div className=' fixed z-10 h-2/5 right-0 left-0 bottom-0 top-0 max-w-2xl m-auto  ' style={{background : 'var(--secondary-bg-color)'}}>
         <div className=' flex flex-col'>

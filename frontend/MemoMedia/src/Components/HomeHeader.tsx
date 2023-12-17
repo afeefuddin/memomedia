@@ -1,17 +1,19 @@
-import React from 'react'
 import { useSelector } from 'react-redux'
 import lightLogo from '../assets/1-removebg-preview.png'
 import darkLogo from '../assets/2-removebg-preview.png'
 import NavigationIcons from './NavigationIcons'
-import image from '../assets/vk.jpeg'
 import { useDispatch } from 'react-redux'
 import { setTheme } from '../theme/themeSlice'
 import { setOpen } from '../Store/profileSlice'
+import { Button } from '@radix-ui/themes'
+import { useNavigate } from 'react-router'
 
 function HomeHeader({profile}) {
     const currentTheme = useSelector((state:any)=>state.theme.currentTheme)
     const pfp =  useSelector((state:any)=>state.auth.userData.profilePic)
     const dispatch = useDispatch();
+    const isAuthenticated = useSelector((state:any)=>state.auth.isAuthenticated)
+    const Navigate = useNavigate()
     const handleTheme : () => any = () =>{
       if(currentTheme==='light'){
         dispatch(setTheme('dark'));
@@ -49,6 +51,7 @@ function HomeHeader({profile}) {
             <img className='w-12 rounded-full' src={pfp} alt="" />
           </div>
           }
+          {!isAuthenticated && <Button onClick={()=>Navigate('/login')} className='mt-auto mb-auto'>Login</Button>}
         </div>
         </div>
     </div>
