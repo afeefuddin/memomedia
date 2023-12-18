@@ -12,7 +12,7 @@ async function sendOTP(req:Request,res : Response) {
         }
         const checkIfUserExist = await isUserPresent(userData)
         if(checkIfUserExist){
-            res.status(422).json({error : "User Already Exists"});
+            res.status(422).json({error : "Username or Email Already In Use!"});
             return;
             
         }
@@ -44,6 +44,7 @@ async function sendOTP(req:Request,res : Response) {
 async function createUser(req:Request,res:Response){
     try{
         let userData = req.body;
+        console.log(userData)
         console.log(userData)
         if(!userData.email || !userData.username || !userData.password || !userData.Otp ){
             res.status(422).json({error: "Please Fill the details Correctly"});

@@ -22,6 +22,7 @@ function Signup() {
     const [passwordWarning,setPasswordWarning] = useState(false)
     const [showError, setShowError] = useState(false)
     const [errorMessage , setErrorMessage] = useState('')
+    const [isVerifyingOTP,setIsVerifyingOTP] = useState(false)
 
     const Navigate = useNavigate()
 
@@ -34,6 +35,13 @@ function Signup() {
             setLoading(false)
             setShowOTPBox(true)
         }
+        if (sendOTPtoUser.isError) {
+            const val = sendOTPtoUser.error.response.data.error
+            setErrorMessage(val || sendOTPtoUser.error.message)
+            setShowError(true)
+            setLoading(false)
+
+        }
     }, [sendOTPtoUser])
 
     const createAccount = useMutation({
@@ -45,6 +53,9 @@ function Signup() {
             const val = createAccount.error.response.data.error
             setErrorMessage(val || createAccount.error.message)
             setShowError(true)
+        }
+        if(createAccount.isSuccess){
+            Navigate('/login')
         }
     },[createAccount])
 
@@ -95,8 +106,9 @@ function Signup() {
                             {showOTPBox && <div><input value={otp} onChange={handleInputChange} placeholder='Enter OTP' className={`border w-60 border-gray-400 mt-2 mb-2 p-1 focus:outline-none ${inputbox}`} type="otp" maxLength={6} /></div>
                             }
                             <div className='flex justify-center mt-2 mb-2'>
-                                {!showOTPBox && !loading &&
+                                {!showOTPBox && !loading  &&
                                     <Button variant="solid" className='w-24' onClick={() =>{
+                                        setShowError(false)
                                         if(username.length>0){ 
                                         if(verifyPassword() && verifyEmail()){
                                         setLoading(true)
@@ -120,9 +132,13 @@ function Signup() {
                                     }>
                                         SignUp
                                     </Button>}
-                                    {loading && <Button className='bg-blue-400'>Loading...</Button> }
-                                {showOTPBox &&
-                                    <Button variant="solid" className='w-24' onClick={() => createAccount.mutate()} >
+                                    {loading && !showError && <Button className='bg-blue-400'>Loading...</Button> }
+                                    {isVerifyingOTP && !showError && <Button className='bg-blue-400'>Verifying OTP...</Button> }
+                                {showOTPBox && !isVerifyingOTP &&
+                                    <Button variant="solid" className='w-24' onClick={() =>{
+                                        setIsVerifyingOTP(true)
+                                        createAccount.mutate()
+                                    } } >
                                         Verify OTP
                                     </Button>}
                             </div>

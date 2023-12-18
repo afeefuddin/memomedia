@@ -11,6 +11,7 @@ import Signup from './Pages/Signup';
 import PrivateRoute from './Components/PrivateRoute';
 import PostPage from './Pages/PostPage';
 import AuthRoute from './Components/AuthRoute';
+import Menu from './Components/Menu';
 
 
 
@@ -19,6 +20,7 @@ function App() {
 
 
   const curTheme = useSelector((state: any) => state.theme.currentTheme);
+  localStorage.setItem('theme',curTheme)
   console.log(curTheme)
   return (
     <>
@@ -26,6 +28,7 @@ function App() {
       <div className={curTheme}>
         <Theme appearance={curTheme}>
           <AddPost />
+          <Menu />
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/user/:username' element={<ProfilePage />} />

@@ -113,5 +113,30 @@ const getPostPage = (userId : string)=>{
     retry : false
   })
 }
+const createComment = async(postId : string|undefined,message: string,userId:string,username:string) =>{
 
-export  {useLogin,handleLogin,useIsLiked,updateLike,getUserDetails,createUser,sendOTP,getPostPage};
+  // const userData = useSelector((state:any)=>state.auth.userData)
+  const body = { 
+    message : message,
+    post : postId,
+    user : userId,
+    username : username
+  }
+  const headers =  {
+    'Authorization': 'Bearer '+jwt_token_id
+  }
+  console.log(body)
+  const response = await axios.post(api_link+'create/comment',body,{
+    headers: headers
+  })
+  const data = await response.data
+  return data
+}
+
+const useCreateComment = (postId : string|undefined,message: string,userId:string,username:string) =>{
+  return useMutation({
+    mutationFn : ()=> createComment(postId,message,userId,username)
+  })
+}
+
+export  {useLogin,handleLogin,useIsLiked,updateLike,getUserDetails,createUser,sendOTP,getPostPage,useCreateComment};

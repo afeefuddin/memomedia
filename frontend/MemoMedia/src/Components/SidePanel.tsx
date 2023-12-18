@@ -11,7 +11,7 @@ function SidePanel() {
   const userData = useSelector((state:any)=>state.auth.userData)
   const Navigate = useNavigate()
   return (
-    <div >
+    <div className='hidden md:block' >
         <div className='flex flex-col'>
             <div className='mt-4 rounded p-2 pl-6 pr-6' style={{background : 'var(--secondary-bg-color)'}}>
                 <div className='flex flex-row '>
@@ -19,7 +19,6 @@ function SidePanel() {
                 <div><img className ="m-2 rounded-full h-14" src={userData.profilePic} alt="" /></div>
                 <div className='mt-auto mb-auto'>{userData.username}</div>
                 </div>
-                <div>You have <span>{userData.post.length}</span> posts in MemoMedia</div>
                 <div className='mt-4'><Button className='w-full rounded-3xl' onClick={()=>Navigate('/user/'+userData.username)} >View Profile</Button></div>
             </div>
             <div className='mt-4 rounded p-2 pl-6 pr-6' style={{background : 'var(--secondary-bg-color)'}}>

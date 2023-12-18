@@ -29,10 +29,10 @@ function HomeHeader({profile}) {
     }
   return (
     <div style={{background : 'var(--secondary-bg-color)'}}>
-        <div className='grid xl:grid-cols-3 grid-cols-4  p-3'>
+        <div className='grid grid-cols-2 sm:grid-cols-4   p-3'>
         <div className='mt-auto mb-auto ml-2'>{currentTheme === 'light' ? <img src={lightLogo} alt="" className='w-48' /> : <img src={darkLogo} alt="" className='w-40' />}</div>
-        <div className='col-span-2 xl:col-span-1'> <NavigationIcons /> </div>
-        <div className='flex flex-row justify-end mr-2 gap-12 sm:gap-6'>
+        <div className='col-span-2 hidden sm:block'> <NavigationIcons /> </div>
+        <div className='flex flex-row justify-end mr-2 gap-6 sm:gap-6'>
           <div className='mt-auto mb-auto' onClick={handleTheme}>{
             currentTheme==='light' ? 
             <svg width="32" height="32" viewBox="0 0 315 316" fill="none" xmlns="http://www.w3.org/2000/svg">

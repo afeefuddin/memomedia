@@ -3,7 +3,7 @@ import HomeHeader from '../Components/HomeHeader'
 import Post from '../Components/Post'
 import { useParams } from 'react-router'
 import { Button } from '@radix-ui/themes'
-import { getPostPage } from '../api/api'
+import { getPostPage, useCreateComment } from '../api/api'
 import Comment from '../Components/Comment'
 import { useSelector } from 'react-redux'
 
@@ -11,41 +11,43 @@ import { useSelector } from 'react-redux'
 function PostPage() {
   const {postId} = useParams()
   const isAuthenticated = useSelector((state:any)=>state.auth.isAuthenticated)
-  // let item = {
-  //   "_id": "657dafadfde65088c485aad9",
-  //   "caption": "HHHHHHHHiiiiii",
-  //   "picture": "https://res.cloudinary.com/dezzqucfl/image/upload/v1702802157/zsmdlaogfrtbhqaznb3h.png",
-  //   "date": 1702735789659,
-  //   "userId": "6556083d62b7ace989773f98",
-  //   "username": "afeefuddin",
-  //   "likes": [],
-  //   "comments": [],
-  //   "__v": 0,
-  //   "profilePic": "https://res.cloudinary.com/dezzqucfl/image/upload/v1702646889/1000_F_410437733_hdq4Q3QOH9uwh0mcqAhRFzOKfrCR24Ta_htpstb.jpg"
-  // }
+  const userData = useSelector((state:any)=>state.auth.userData)
   const {data , isLoading , error} = getPostPage(postId? postId : '')
-
   const [comment, setComment] = useState('')
-  // const comments = [{
-  //   user: 'viratkohli',
-  //   message: 'afeef is great',
-  //   date: 1702806365043,
-  //   profilePic: "https://res.cloudinary.com/dezzqucfl/image/upload/v1702646889/1000_F_410437733_hdq4Q3QOH9uwh0mcqAhRFzOKfrCR24Ta_htpstb.jpg"
-  // },{
-  //   user: 'viratkohli',
-  //   message: 'afeef is great',
-  //   date: 1702806365043,
-  //   profilePic: "https://res.cloudinary.com/dezzqucfl/image/upload/v1702646889/1000_F_410437733_hdq4Q3QOH9uwh0mcqAhRFzOKfrCR24Ta_htpstb.jpg"
-  // }]
   const [comments, setComments] = useState([]);
   const [blinking,setBlinking] = useState(false)
+  const [posting,setPosting] = useState(false)
+  const [show ,setShow] = useState(false);
+  const createComment = useCreateComment(postId,comment,userData.userId,userData.username)
 
+  function postComment(){
+    createComment.mutate()
+    setPosting(true)
+  }
   useEffect(()=>{
     setComments(data?.post?.comments)
+    setShow(true)
   },[data])
-  
-  if (isLoading) {
-    return <p>Loading...</p>;
+  useEffect(()=>{
+    if(createComment.isSuccess)
+    setPosting(false)
+  },[createComment])
+
+
+
+  const onLoadEffect = () => {
+    setShow(false)
+    setTimeout(() => {
+        setShow(true);
+    }, 2000);
+};
+
+useEffect(onLoadEffect, []);
+
+
+
+  if (isLoading || !show) {
+    return <div className='flex items-center justify-center' style={{ background: 'var(--primary-bg-color)' , height:'100vh'}}>Loading...</div>;
   }
   return (
     <div style={{ background: 'var(--primary-bg-color)' }} className='min-h-screen'>
@@ -66,7 +68,13 @@ function PostPage() {
                 }
               } value={comment} ></textarea>
             </div>
-            {comment.length > 0 && <div><Button>Post</Button></div>}
+            {comment.length > 0 && !posting &&<div><Button 
+            onClick={()=>{
+              console.log('Clicked')
+              postComment()}}>Post</Button></div>}
+            {posting && <div>
+                <Button className='bg-blue-400'>Posting...</Button>
+              </div>}
             <div>
               Comments
             </div>

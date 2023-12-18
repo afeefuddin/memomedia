@@ -17,7 +17,7 @@ async function getPostFromDb(page: number, pageSize: number) {
             const pfp = await getUserProfilePicfromDb(post.userId.toString())
             const curPost = {
                 ...post,
-                profilePic: pfp.profilePic
+                profilePic: pfp?.profilePic
             }
             allPost.push(curPost)
 
@@ -26,7 +26,7 @@ async function getPostFromDb(page: number, pageSize: number) {
         return allPost;
     }
     catch (error) {
-        console.log(error.message);
+        console.log(error.message + "Here");
         return null;
     }
 }
@@ -176,4 +176,17 @@ async function getPostfromIdfromDB(userId: string) {
     }
 }
 
-export { getPostFromDb, getSizeofPost, addPostinDB, getIfUserHasLiked, addLikeInthePost, getusersPostFromDb, getPostfromIdfromDB }
+async function insertCommentToThePost(commentId:string,postId:string) {
+    try {
+        const post = await Post.findByIdAndUpdate(
+            postId,
+            { $push: { comments: commentId } },
+        )
+        if(post)
+            return true
+    } catch (error) {
+        return null
+    } 
+ }
+
+export { getPostFromDb, getSizeofPost, addPostinDB, getIfUserHasLiked, addLikeInthePost, getusersPostFromDb, getPostfromIdfromDB ,insertCommentToThePost}

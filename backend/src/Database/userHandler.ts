@@ -78,11 +78,15 @@ async function getUserDatafromDB(username:string) {
 }
 async function getUserProfilePicfromDb(userId : string) {
     try {
+        console.log(userId+"here")
         const res = await User.findById(userId).select('profilePic')
         return res
     } catch (error) {
         return null
     }
 }
+
+
+
 
 export {addUser, isUserPresent,isValidDetails,addPostToUser,getUserDatafromDB,getUserProfilePicfromDb}

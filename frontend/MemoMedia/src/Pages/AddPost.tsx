@@ -1,6 +1,7 @@
 import  { useState } from 'react'
 import styles from './css/AddPost.module.css'
 import { setAddPost } from '../Store/addPostSlice';
+import PreviewImage  from '../assets/previewImage.svg';
 
 const {addPostBg} = styles;
 
@@ -12,25 +13,37 @@ import axios from 'axios';
 function AddPost() {
   const isOpen = useSelector((state:any)=> state.addpost.isOpen)
   const isAuthenticated = useSelector((state:any)=>state.auth.isAuthenticated)
+  const id = useSelector((state:any)=>state.auth.userData._id)
+  const [caption , setCaption ] = useState('');
+  const [file,setFile] = useState(null)
+  const [imageSrc, setImageSrc] = useState(null);
+  console.log(id)
   const dispatch = useDispatch();
   const toggleAddPost = () =>{
-    console.log('Here')
+    
     dispatch(setAddPost())
   }
-  const [caption , setCaption ] = useState('');
-  const [file, setFile] = useState();
-
-  const onChange = (e: any) => {
-      console.log(e.target.files[0])
-      setFile(e.target.files[0])
-  }
+  const handleFileChange = (e) => {
+    const curfile = e.target.files[0];
+    setFile(curfile)
+    if (curfile) {
+      const objectURL = URL.createObjectURL(curfile);
+      setImageSrc(objectURL);
+    }
+  };
+  // const onChange = (e: any) => {
+  //     console.log(e.target.files[0])
+  //     setFile(e.target.files[0])
+  //     loadfile(e)
+  // }
   const username = useSelector((state:any)=>state.auth.userData.username)
+  
   async function upload() {
     console.log(caption)
     const formData = new FormData();
     formData.append('picture',file);
     formData.append('caption',caption);
-    formData.append('userId',"6556083d62b7ace989773f98");
+    formData.append('userId',id);
     formData.append('username',username)
     const jwt_token_id = localStorage.getItem('jwt_token_id');
     const headers = {
@@ -49,20 +62,26 @@ function AddPost() {
    <div >
     {isAuthenticated && isOpen && <div className='fixed overflow-hidden'><div className={`${addPostBg} flex justify-center items-center`} onClick={toggleAddPost} onScroll={toggleAddPost}></div>
   
-      <div className=' fixed z-10 h-2/5 right-0 left-0 bottom-0 top-0 max-w-2xl m-auto  ' style={{background : 'var(--secondary-bg-color)'}}>
+      <div className=' fixed z-10 h-fit right-0 left-0 bottom-0 top-0 max-w-2xl m-auto  ' style={{background : 'var(--secondary-bg-color)'}}>
         <div className=' flex flex-col'>
           <div className='flex flex-col p-6'>
             <label htmlFor="Caption"  >Caption</label>
             <input className='border border-gray-400' style={{background: 'var(--secondary-bg-color)'}} type="text" 
             value={caption}  onChange={(e)=>setCaption(e.target.value)}/>
           </div>
-          <div className='p-6'>
-            <input type="file" required onChange={(e)=>onChange(e)}  />
+          <div className='p-6 pt-2'>
+            <div className='flex justify-center items-center mb-2'>
+           {imageSrc ?<img src={imageSrc} alt="" id='output' className='h-full max-h-72 max-w-xl'/> : <img src={PreviewImage} alt="" id='output' className='h-full max-h-72 max-w-xl'/> } 
+
+            </div>
+            <input type="file" accept='image/*' required onChange={handleFileChange}   />
           </div>
           <div className='p-6'>
             <Button onClick={()=>{
-              toggleAddPost()
-              upload()
+              if(imageSrc!=null){
+                toggleAddPost()
+                upload()
+              }
             }} >Upload </Button>
           </div>
         </div>

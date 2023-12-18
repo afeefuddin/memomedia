@@ -5,6 +5,8 @@ interface IComment {
     post : Types.ObjectId;
     user : Types.ObjectId;
     date : number;
+    username : string;
+    profilePic? : string;
     likes : Types.ObjectId[];
 }
 interface Ipost {
