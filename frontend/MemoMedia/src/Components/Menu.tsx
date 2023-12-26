@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router'
 import { logout } from '../auth/authSlice';
 import { setOpen } from '../Store/profileSlice';
+import { useOutsideClick } from '../Hooks/useOutSideClick';
 
 function Menu() {
     const isProfileToggleOpen = useSelector((state:any)=>state.profile.isOpen);
@@ -14,11 +15,13 @@ function Menu() {
         localStorage.clear()
        dispatch(logout())
       }
-
+      const node = useOutsideClick(()=>{
+        dispatch(setOpen())
+      })
   return (
     <div>
     { isProfileToggleOpen && 
-      <div className=' absolute right-2 mt-2 text-lg w-40 p-2 rounded top-20'  style={{background : 'var(--secondary-bg-color)'}}>
+      <div ref={node} className=' absolute right-2 mt-2 text-lg w-40 p-2 rounded top-20'  style={{background : 'var(--secondary-bg-color)'}}>
     <div className='p-2' onClick={()=>{
         dispatch(setOpen())
         Navigate('user/'+username)

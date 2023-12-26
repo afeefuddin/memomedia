@@ -96,7 +96,7 @@ function Post(props: any) {
             else{
               setBlinking(true)
             }
-          }}><Comment /><span className="ml-2 mt-1 font-poppins">Comment</span></div>
+          }}><Comment /><span className="ml-2 mt-1 font-poppins cursor-pointer">Comment</span></div>
           <div className="m-auto flex flex-row" onClick={props.copyLink}><ShareIcon /><span className="ml-2 mt-1 font-poppins">Share</span></div>
         </div>
         <div className="ml-1 mt-2 flex flex-row" onClick={props.items.like}>{!likedAlready && liked ? <div>{props.items.likes.length + 1}</div> : <div>{props.items.likes.length}</div>}Likes</div>

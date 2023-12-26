@@ -2,6 +2,7 @@ import { User } from "../Model/UserSchema";
 import { Iloginuser, Inewuser } from "../Interfaces/Interface";
 import { comparePassword } from "../Middleware/hashPassword";
 import { Types } from "mongoose";
+import { deleteImagefromCloudinary } from "../Utils/Cloudinary";
 
 
 async function addUser(userData :Inewuser){
@@ -86,7 +87,27 @@ async function getUserProfilePicfromDb(userId : string) {
     }
 }
 
+async function updateProfilePicInDB(img_url:string,username:string) {
+    try {
+        const user = await User.findOne({username : username})
+        const old_url=user.profilePic
+        
+        let publicIdSplit = old_url?.split('/')
+        let publicId = publicIdSplit[publicIdSplit.length-1]
+        publicId = publicId?.split('.')[0]
+        user.profilePic = img_url 
+        await user.save()
+        console.log(publicId);
+        //delete the old url from public id here
+        const deleted = await deleteImagefromCloudinary(publicId)
+        return true
+        
+    } catch (error) {
+        console.log(error)
+    }
+    return false
+}
 
 
 
-export {addUser, isUserPresent,isValidDetails,addPostToUser,getUserDatafromDB,getUserProfilePicfromDb}
+export {addUser, isUserPresent,isValidDetails,addPostToUser,getUserDatafromDB,getUserProfilePicfromDb,updateProfilePicInDB}

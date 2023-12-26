@@ -23,5 +23,16 @@ async function uploadImagetoCloudinary(localFilePath: string){
     }
 }
 
+async function deleteImagefromCloudinary(publicId:string) {
+    try {
+        if(!publicId) return
+        const res =  await cloudinary.uploader.destroy(publicId)
+        return true
+    } catch (error) {
+        console.log("Error deleting the Image");
+        return false;
+    }
+}
 
+export {deleteImagefromCloudinary}
 export default uploadImagetoCloudinary;

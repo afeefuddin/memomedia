@@ -4,12 +4,14 @@ import { Button } from '@radix-ui/themes'
 import axios from 'axios'
 import Post from '../Components/Post'
 import { useParams } from 'react-router'
+import UpdateProfile from '../Components/UpdateProfile'
 
 function ProfilePage() {
     const isLoggedIn = true;
-    const isUser = true
+    const [isUser,setIsUser] = useState(false)
     const {username} = useParams()
     const [userData, setUserData] = useState();
+    const [isOpen,setIsOpen] = useState<boolean>(false)
     // const {isError,data} = getUserDetails('afeefuddin')
     const fetchApi:(username : string)=>any = async(username : string) => {
        
@@ -25,9 +27,19 @@ function ProfilePage() {
             console.log(error)
         }
     }
+    const checkIfuser : () => any =  () =>{
+        const data = localStorage.getItem('user')
+        if(data){
+            let usernameLocal = JSON.parse(data).username
+            if(usernameLocal===username){
+                setIsUser(true)
+            }
+        }
+    }
     useEffect(()=>{
        
         fetchApi(username)
+        checkIfuser()
     },[])
     if(userData==null){
         return (
@@ -37,13 +49,15 @@ function ProfilePage() {
         )
     }
   return (
+    <>
+    <UpdateProfile isOpen={isOpen} setIsOpen={setIsOpen} />
     <div className='h-full min-h-screen' style={{background : 'var(--primary-bg-color)'}}>
         <div><HomeHeader profile='true' /></div>
         <div className='flex flex-row gap-6'>
             <div className='mt-4 mb-4 ml-4 p-4 h-fit w-fit flex flex-col items-center ' style={{background : 'var(--secondary-bg-color)'}}>
                 <div><img className='h-36 rounded-full' src={userData?.profilePic} alt="" /></div>
                 <div className='text-lg text-center mt-4 mb-4'>{userData?.username}</div>
-                {isLoggedIn && isUser && <Button className='ml-auto mr-auto mt-2 mb-4'>Update Profile Pic</Button>}
+                {isLoggedIn && isUser && <Button className='ml-auto mr-auto mt-2 mb-4' onClick={()=>setIsOpen(true)}>Update Profile Pic</Button>}
                 {isLoggedIn && !isUser && <Button>Follow</Button>}
                 <div className='flex flex-row gap-6 mt-4 mb-4'>
                 <div>{userData.PostsData?.length} Posts</div>
@@ -72,6 +86,7 @@ function ProfilePage() {
             </div>
         </div>
     </div>
+    </>
   )
 }
 

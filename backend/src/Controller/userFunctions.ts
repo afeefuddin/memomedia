@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { isValidDetails,getUserDatafromDB, getUserProfilePicfromDb } from "../Database/userHandler";
+import { isValidDetails,getUserDatafromDB, getUserProfilePicfromDb, updateProfilePicInDB } from "../Database/userHandler";
 import { generateWebTokens } from "../Middleware/auth";
 import { getIfUserHasLiked, getusersPostFromDb } from "../Database/PostHandler";
+import uploadImagetoCloudinary from "../Utils/Cloudinary";
 
 async function loginUser(req:Request,res:Response) {
   try{
@@ -128,4 +129,27 @@ async function getUserProfilePic(req:Request,res:Response){
   }
 }
 
-export {loginUser,userHasLiked,getUserDetails};
+async function updateProfile(req:Request,res:Response){
+  try {
+    console.log('here')
+    const profileBody = req.body;
+  
+    const username:  string = req.headers.username as string
+    //Add picture to cloudinary
+    const file = req.file.path
+    const img_url = await uploadImagetoCloudinary(file)
+    // const img_url = "Hello"
+    const pfp = await updateProfilePicInDB(img_url,username)
+    if(pfp){
+      res.status(200).json({"message":"Successfully Updated"})
+    }
+    else{
+      res.sendStatus(500)
+    }
+    
+  } catch (error) {
+    res.sendStatus(500)
+  }
+}
+
+export {loginUser,userHasLiked,getUserDetails,updateProfile};

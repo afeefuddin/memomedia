@@ -72,10 +72,13 @@ const authSlice = createSlice({
             accountCreated : 0,
             profilePic : "",
           }
+    },
+    updateProfilePic : (state) =>{
+      state.userData = getDataFromLocalStorage()
     }
     // other authentication-related reducers
   },
 });
 
-export const { login,logout } = authSlice.actions;
+export const { login,logout,updateProfilePic } = authSlice.actions;
 export default authSlice.reducer;

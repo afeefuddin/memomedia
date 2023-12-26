@@ -9,18 +9,22 @@ import usePostSearch from '../Hooks/usePostSearch';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import LoadingImage from '../Components/LoadingImage';
+import { loadDetails } from '../api/api';
+import { updateProfilePic } from '../auth/authSlice';
 
 
 function HomeFeed() {
 
     const [page,setPage] = useState(0);
+    const [pageLoading,setPageLoading] = useState(true)
     const {loading,error,posts,hasMore} = usePostSearch(page)
     const Navigate = useNavigate()
     const dispatch = useDispatch();
     const lastPost = useRef();
     const firstPost = useRef();
     const isAddPost = useSelector((state:any)=>state.addpost.isOpen)
- 
+
+
     const fetchItems = useCallback((node)=>{
       if(loading) return;
       if(lastPost.current) lastPost.current.disconnect()
@@ -32,8 +36,23 @@ function HomeFeed() {
       }) 
       if(node) lastPost.current?.observe(node)
     },[loading,hasMore]);
+    useEffect(()=>{
+      async function loadPage() {
+        await loadDetails()
+        dispatch(updateProfilePic())
+        setPageLoading(false)
+      }
+      loadPage()
+    },[])
 
     const username = useSelector((state:any) => state.auth.userData.username)
+    if(pageLoading){
+      return (
+        <div className='h-screen flex items-center justify-center' style={{background : 'var(--primary-bg-color)'}}>
+        <div className='m-auto text-lg'>Loading...</div>
+    </div>
+      )
+    }
   return (
     <div className={`${isAddPost? 'h-screen overflow-hidden':'h-full'}`} style={{background : 'var(--primary-bg-color)'}}>
       <HomeHeader />

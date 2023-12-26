@@ -139,4 +139,36 @@ const useCreateComment = (postId : string|undefined,message: string,userId:strin
   })
 }
 
-export  {useLogin,handleLogin,useIsLiked,updateLike,getUserDetails,createUser,sendOTP,getPostPage,useCreateComment};
+
+//Load Details
+
+const loadDetails = async()=>{
+  const headers =  {
+    'Authorization': 'Bearer '+jwt_token_id
+  }
+  const userData = localStorage.getItem('user')
+  let username = ''
+  if(userData)
+    username  = JSON.parse(userData).username
+ try {
+   const data = await axios.get(api_link + `loadDetails/${username}`,{headers})
+   if(data){
+     let user = localStorage.getItem('user')
+     if(user!==null){
+      let userData = JSON.parse(user)
+      console.log(data)
+      userData['profilePic'] = data.data.profilePic
+      console.log
+      localStorage.setItem('user',JSON.stringify(userData))
+     }
+
+   }
+
+ } catch (error) {
+    console.log('Error')
+ }
+
+}
+
+
+export  {useLogin,handleLogin,useIsLiked,updateLike,getUserDetails,createUser,sendOTP,getPostPage,useCreateComment,loadDetails};
