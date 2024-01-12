@@ -13,4 +13,14 @@ async function loadDetails(req:Request,res:Response) {
     
 }
 
+// async function searchUser(req:Request,res:Response) {
+//     try {
+//         const query = req.query
+//         const data = await searchFromDB(id)
+//         res.status(200).json({data})
+//     } catch (error) {
+//         res.status(500).json({'message' : 'Erro'})
+//     }
+// }
+
 export {loadDetails}

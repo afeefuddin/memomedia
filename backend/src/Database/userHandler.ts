@@ -1,7 +1,7 @@
 import { User } from "../Model/UserSchema";
-import { Iloginuser, Inewuser } from "../Interfaces/Interface";
+import { Iloginuser, Inewuser, Iuser } from "../Interfaces/Interface";
 import { comparePassword } from "../Middleware/hashPassword";
-import { Types } from "mongoose";
+import mongoose, { Document, Types } from "mongoose";
 import { deleteImagefromCloudinary } from "../Utils/Cloudinary";
 
 
@@ -41,7 +41,7 @@ async function isUserPresent(userData:Inewuser){
     return false;
 }
 
-async function isValidDetails(userData: Iloginuser) {
+async function isValidDetails(userData: Iloginuser)  {
     const username = userData.username;
     const password = userData.password;
     const res = await User.findOne({username:username});
@@ -108,6 +108,17 @@ async function updateProfilePicInDB(img_url:string,username:string) {
     return false
 }
 
+async function searchUsersFromDB(value:String) {
+    try {
+        const query = {username : {$regex : value}}
+        const data = await User.find(query,{password:0});
+        if(data){
+            return data;
+        }
+        return null;
+    } catch (error) {
+        return null;
+    }
+}
 
-
-export {addUser, isUserPresent,isValidDetails,addPostToUser,getUserDatafromDB,getUserProfilePicfromDb,updateProfilePicInDB}
+export {addUser, isUserPresent,isValidDetails,addPostToUser,getUserDatafromDB,getUserProfilePicfromDb,updateProfilePicInDB,searchUsersFromDB}

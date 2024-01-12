@@ -7,3 +7,11 @@
     grid-template-columns: 2fr 4fr 1fr;
 
 }
+.loadingClass{
+    width: 376px;
+}
+@media (width<400px) {
+    .loadingClass{
+        width: 300px;
+    }
+}

@@ -1,5 +1,5 @@
 import express from "express";
-import { loginUser, userHasLiked,getUserDetails, updateProfile } from "../Controller/userFunctions";
+import { loginUser, userHasLiked,getUserDetails, updateProfile, searchUser } from "../Controller/userFunctions";
 import { createUser, sendOTP } from "../Controller/createUser";
 import { getPostfromId } from "../Controller/getPosts";
 import { getAllComment, getComment } from "../Controller/CommentFunctions";
@@ -18,5 +18,6 @@ router.route('/posts/comment').post(getAllComment)
 router.route('/post/:postId').get(getPostfromId)
 router.route('/comment').get(getComment)
 router.route('/user/update').post(isUser,upload.single('picture'),updateProfile)
+router.route('/search/:query').get(searchUser)
 
 export {router};

@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 
-interface Iuser {
-    userId :  string
+ interface Iuser {
+    _id :  string
     username : string;
     email : string;
     post : any;
@@ -13,10 +13,11 @@ interface Iuser {
 
 }
 
-interface AuthState {
+export interface AuthState {
   isAuthenticated: boolean;
   userData : Iuser;
 }
+
 const getTokenFromLocalStorage = (): boolean  => {
     if( localStorage.getItem('jwt_token_id')===null){
       return false
@@ -25,10 +26,10 @@ const getTokenFromLocalStorage = (): boolean  => {
     return true
   
 };
-const getDataFromLocalStorage= (): any =>{
+const getDataFromLocalStorage= (): Iuser =>{
    if( localStorage.getItem('user')===null){
     return {
-      userId : "",
+      _id : "",
       username : "",
       email : "",
       post : [],
@@ -37,7 +38,6 @@ const getDataFromLocalStorage= (): any =>{
       accountCreated : 0,
       profilePic : "",
   }
-
   }
   const userJsonString = localStorage.getItem('user');
   const user = userJsonString ? JSON.parse(userJsonString) : null;
@@ -63,7 +63,7 @@ const authSlice = createSlice({
     logout  : (state) =>{
         state.isAuthenticated = false;
         state.userData =  {
-            userId : "",
+            _id : "",
             username : "",
             email : "",
             post : [],

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
  
 
-interface ThemeState {
+export interface ThemeState {
     currentTheme: string;
   }
   

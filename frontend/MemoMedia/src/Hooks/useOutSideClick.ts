@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react"
 
-let useOutsideClick = (handler)=>{
+let useOutsideClick = (handler : any)=>{
     let ref = useRef()
     useEffect(()=>{
-        let curHandler = (event)=>{
-            if(!ref.current.contains(event.target)){
+        let curHandler = (event : any)=>{
+            if(!ref.current?.contains(event.target)){
                 handler();
             }
         }

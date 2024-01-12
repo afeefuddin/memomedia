@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useSelector } from "react-redux";
+
 
 const api_link = import.meta.env.VITE_API_LINK;
 const jwt_token_id = localStorage.getItem('jwt_token_id')
@@ -170,5 +170,20 @@ const loadDetails = async()=>{
 
 }
 
+// const searchUsers = async(value : string) => {
+//   const data = await axios.get(api_link + `search/${value}`)
+//   const res = await data.data;
+//   return res
+// }
+
+// const useSearch : (value:string)=>any = (value : string) =>{
+//   return useQuery({
+//     queryKey : ['Search'],
+//     queryFn : () => searchUsers,
+//     refetchOnWindowFocus : false, 
+//     enabled : !!value,
+
+//   })
+// }
 
 export  {useLogin,handleLogin,useIsLiked,updateLike,getUserDetails,createUser,sendOTP,getPostPage,useCreateComment,loadDetails};

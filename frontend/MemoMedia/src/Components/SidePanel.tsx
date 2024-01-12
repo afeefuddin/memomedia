@@ -1,14 +1,13 @@
-import React from 'react'
-import Image from '../assets/vk.jpeg'
 import { Button } from '@radix-ui/themes'
 import { useDispatch } from 'react-redux'
 import { setAddPost } from '../Store/addPostSlice'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { StateType } from '../Store/store'
 
 function SidePanel() {
   const dispatch = useDispatch();
-  const userData = useSelector((state:any)=>state.auth.userData)
+  const userData = useSelector((state:StateType)=>state.auth.userData)
   const Navigate = useNavigate()
   return (
     <div className='hidden md:block' >

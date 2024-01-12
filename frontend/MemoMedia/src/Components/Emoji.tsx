@@ -1,8 +1,9 @@
 import {useEffect, useState} from 'react'
 import { useSelector } from 'react-redux';
+import { StateType } from '../Store/store';
 
 function Emoji(props : any) {
-  const isAuthenticated = useSelector((state:any)=>state.auth.isAuthenticated)
+  const isAuthenticated = useSelector((state:StateType)=>state.auth.isAuthenticated)
     const [laugh,setLaugh] = useState(props.liked);
     useEffect(()=>{
       setLaugh(props.liked)
@@ -11,7 +12,7 @@ function Emoji(props : any) {
     <div> <div className="text-2xl flex flex-row" onClick={()=>{
       if(isAuthenticated)
         setLaugh(!laugh);
-    }}>{laugh ?  <div>&#x1F602;</div>: <div>&#x1F636;</div>} <span className="ml-2 mt-1 text-lg font-poppins">React</span></div></div>
+    }}>{laugh ?  <div>&#x1F602;</div>: <div>&#x1F636;</div>} <span className="sm:ml-2 mt-1 text-lg font-poppins">React</span></div></div>
   )
 }
 

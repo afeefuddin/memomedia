@@ -17,7 +17,7 @@ interface Ipost {
     date? : number;
     likes? : Types.ObjectId[];
     comments? : Types.ObjectId[];
-    profilePic? : any
+    profilePic? : string
 
 }
 interface Iuser {

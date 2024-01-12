@@ -135,7 +135,7 @@ async function removeLikeInthePost(postId: string, userId: string) {
 // we will search userId the post liked array
 
 
-async function getIfUserHasLiked(userId: any, postId: any) {
+async function getIfUserHasLiked(userId: string, postId: string) {
     try {
         console.log(userId);
         console.log(postId);

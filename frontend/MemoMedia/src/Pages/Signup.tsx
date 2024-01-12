@@ -6,8 +6,8 @@ import imageDark from '../assets/2-removebg-preview.png'
 import styles from '../Components/css/LoginComponent.module.css'
 import { useMutation } from '@tanstack/react-query';
 import { createUser, sendOTP } from '../api/api';
-import LoadingButton from '../Components/LoadingButton';
 import { useNavigate } from 'react-router';
+import { StateType } from '../Store/store';
 
 const { inputbox } = styles;
 function Signup() {
@@ -26,7 +26,7 @@ function Signup() {
 
     const Navigate = useNavigate()
 
-    const curTheme = useSelector((state: any) => state.theme.currentTheme);
+    const curTheme = useSelector((state: StateType) => state.theme.currentTheme);
     const sendOTPtoUser = useMutation({
         mutationFn: () => sendOTP(username, email)
     })
@@ -49,8 +49,7 @@ function Signup() {
     })
     useEffect(()=>{
         if(createAccount.isError){
-            console.log(createAccount.error.response.data.error)
-            const val = createAccount.error.response.data.error
+            const val = createAccount.error.message
             setErrorMessage(val || createAccount.error.message)
             setShowError(true)
         }

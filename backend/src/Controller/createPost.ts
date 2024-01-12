@@ -23,12 +23,14 @@ async function createPost(req: Request,res:Response){
        
         if(Post){
             res.sendStatus(201);
+            return
         }
         else{
 
             res.status(500).json({error : "Error Creating the post"});
+            return;
         }
-        res.sendStatus(200)
+        // res.sendStatus(200)
 
     }
     catch(error){

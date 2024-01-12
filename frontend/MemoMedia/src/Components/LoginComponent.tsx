@@ -4,11 +4,12 @@ import styles from './css/LoginComponent.module.css'
 import image from '../assets/1-removebg-preview.png'
 import imageDark from '../assets/2-removebg-preview.png'
 import { useSelector } from 'react-redux'
-import { useLogin,handleLogin } from '../api/api'
-import { login, logout } from '../auth/authSlice'
+import { handleLogin } from '../api/api'
+import { login } from '../auth/authSlice'
 import { useMutation } from '@tanstack/react-query'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { StateType } from '../Store/store'
 
 const { container, inputbox } = styles
 
@@ -20,7 +21,7 @@ function updateState(LoginMutate : any,dispatch:any){
 function LoginComponent(props: any) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const curTheme = useSelector((state: any) => state.theme.currentTheme);
+    const curTheme = useSelector((state: StateType) => state.theme.currentTheme);
     const Navigate = useNavigate()
     const dispatch = useDispatch()
     

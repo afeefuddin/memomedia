@@ -6,16 +6,17 @@ import { Button } from '@radix-ui/themes'
 import { getPostPage, useCreateComment } from '../api/api'
 import Comment from '../Components/Comment'
 import { useSelector } from 'react-redux'
+import { StateType } from '../Store/store'
 
 
 function PostPage() {
   const {postId} = useParams()
-  const isAuthenticated = useSelector((state:any)=>state.auth.isAuthenticated)
-  const userData = useSelector((state:any)=>state.auth.userData)
-  const {data , isLoading , error} = getPostPage(postId? postId : '')
+  const isAuthenticated = useSelector((state:StateType)=>state.auth.isAuthenticated)
+  const userData = useSelector((state:StateType)=>state.auth.userData)
+  const {data , isLoading } = getPostPage(postId? postId : '')
   const [comment, setComment] = useState('')
   const [comments, setComments] = useState([]);
-  const [blinking,setBlinking] = useState(false)
+  // const [blinking,setBlinking] = useState(false)
   const [posting,setPosting] = useState(false)
   const [show ,setShow] = useState(false);
   const createComment = useCreateComment(postId,comment,userData.userId,userData.username)

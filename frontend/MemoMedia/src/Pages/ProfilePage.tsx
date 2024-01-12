@@ -5,6 +5,7 @@ import axios from 'axios'
 import Post from '../Components/Post'
 import { useParams } from 'react-router'
 import UpdateProfile from '../Components/UpdateProfile'
+import NavigationIcons from '../Components/NavigationIcons'
 
 function ProfilePage() {
     const isLoggedIn = true;
@@ -53,7 +54,7 @@ function ProfilePage() {
     <UpdateProfile isOpen={isOpen} setIsOpen={setIsOpen} />
     <div className='h-full min-h-screen' style={{background : 'var(--primary-bg-color)'}}>
         <div><HomeHeader profile='true' /></div>
-        <div className='flex flex-row gap-6'>
+        <div className='flex flex-col sm:flex-row gap-6 items-center sm:items-start '>
             <div className='mt-4 mb-4 ml-4 p-4 h-fit w-fit flex flex-col items-center ' style={{background : 'var(--secondary-bg-color)'}}>
                 <div><img className='h-36 rounded-full' src={userData?.profilePic} alt="" /></div>
                 <div className='text-lg text-center mt-4 mb-4'>{userData?.username}</div>
@@ -66,7 +67,7 @@ function ProfilePage() {
                 </div>
                 <div>Account Created On 27/10/2023</div>
             </div>
-            <div  className='mt-4 mb-4 ml-4 flex flex-col  w-full' >
+            <div  className='mt-4 mb-4 pl-4 flex flex-col  w-full' >
                 <div className='text-3xl font-bold items-start'>Your Posts</div>
                 <div className='flex flex-col item-center'>
                 <div className='mt-4 flex flex-col  items-center '>
@@ -85,6 +86,7 @@ function ProfilePage() {
                 </div>
             </div>
         </div>
+        <div className='block sm:hidden fixed bottom-0 w-full z-50' style={{background : 'var(--secondary-bg-color)'}}><NavigationIcons /></div>
     </div>
     </>
   )

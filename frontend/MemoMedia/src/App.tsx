@@ -12,16 +12,26 @@ import PrivateRoute from './Components/PrivateRoute';
 import PostPage from './Pages/PostPage';
 import AuthRoute from './Components/AuthRoute';
 import Menu from './Components/Menu';
-
+import Search from './Pages/Search';
+import { useEffect } from 'react';
+import { StateType } from './Store/store';
 
 
 
 function App() {
 
 
-  const curTheme = useSelector((state: any) => state.theme.currentTheme);
+  const curTheme = useSelector((state: StateType) => state.theme.currentTheme);
   localStorage.setItem('theme',curTheme)
   console.log(curTheme)
+
+  useEffect(() => {
+    // Apply dark mode classes when the component mounts or when isDarkMode changes
+    if(curTheme==='dark'){
+    const body = document.documentElement;
+    body.classList.toggle('dark',curTheme);
+    }
+  }, [curTheme]);
   return (
     <>
 
@@ -32,6 +42,8 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/user/:username' element={<ProfilePage />} />
+            <Route path='/search' element={<Search />} />
+            
             <Route path='post/:postId' element={   
                 <PostPage />
             } />

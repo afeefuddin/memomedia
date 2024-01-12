@@ -9,18 +9,20 @@ import { Button } from '@radix-ui/themes';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { StateType } from '../Store/store';
 
 function AddPost() {
-  const isOpen = useSelector((state:any)=> state.addpost.isOpen)
-  const isAuthenticated = useSelector((state:any)=>state.auth.isAuthenticated)
-  const id = useSelector((state:any)=>state.auth.userData._id)
+  const isOpen = useSelector((state:StateType)=> state.addpost.isOpen)
+  const isAuthenticated = useSelector((state:StateType)=>state.auth.isAuthenticated)
+  const id = useSelector((state:StateType)=>state.auth.userData._id)
   const [caption , setCaption ] = useState('');
   const [file,setFile] = useState(null)
   const [imageSrc, setImageSrc] = useState(null);
+  const [uploading,setUploading] = useState(false)
   console.log(id)
   const dispatch = useDispatch();
   const toggleAddPost = () =>{
-    
+    setImageSrc(null)
     dispatch(setAddPost())
   }
   const handleFileChange = (e) => {
@@ -39,6 +41,7 @@ function AddPost() {
   const username = useSelector((state:any)=>state.auth.userData.username)
   
   async function upload() {
+    setUploading(true)
     console.log(caption)
     const formData = new FormData();
     formData.append('picture',file);
@@ -54,7 +57,8 @@ function AddPost() {
     const data = await axios.post(import.meta.env.VITE_API_LINK + 'create/post', formData, {
       headers: headers
     });
-  
+    setUploading(false)
+    toggleAddPost()
     console.log(data);
   }
 
@@ -79,10 +83,10 @@ function AddPost() {
           <div className='p-6'>
             <Button onClick={()=>{
               if(imageSrc!=null){
-                toggleAddPost()
+               
                 upload()
               }
-            }} >Upload </Button>
+            }} className={`${uploading ? 'bg-blue-400' : ''}`} >{uploading ? 'Uploading...': 'Upload' } </Button>
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { isValidDetails,getUserDatafromDB, getUserProfilePicfromDb, updateProfilePicInDB } from "../Database/userHandler";
+import { isValidDetails,getUserDatafromDB, getUserProfilePicfromDb, updateProfilePicInDB, searchUsersFromDB } from "../Database/userHandler";
 import { generateWebTokens } from "../Middleware/auth";
 import { getIfUserHasLiked, getusersPostFromDb } from "../Database/PostHandler";
 import uploadImagetoCloudinary from "../Utils/Cloudinary";
@@ -55,7 +55,7 @@ async function userHasLiked(req:Request, res:Response){
     res.sendStatus(401);
         return;
   }
-  const hasLiked = await getIfUserHasLiked(userId,postId);
+  const hasLiked = await getIfUserHasLiked(userId as string,postId as string);
   if(hasLiked){
     res.status(200).json({isLiked : true});
   }
@@ -152,4 +152,22 @@ async function updateProfile(req:Request,res:Response){
   }
 }
 
-export {loginUser,userHasLiked,getUserDetails,updateProfile};
+async function searchUser(req:Request, res : Response) {
+  try {
+    const query = req.params.query
+    if(!query){
+      res.sendStatus(403)
+      return;
+    }
+    const data = await searchUsersFromDB(query);
+    if(data){
+      res.status(200).json({"data": data})
+    }
+    else{
+      res.sendStatus(500)
+    }
+  } catch (error) {
+    res.sendStatus(500)
+  }
+}
+export {loginUser,userHasLiked,getUserDetails,updateProfile,searchUser};

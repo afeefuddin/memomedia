@@ -39,7 +39,10 @@ function UpdateProfile(props:any) {
 
     if(props.isOpen){
          return (
-             <div className='fixed overflow-hidden'><div className={` flex justify-center items-center w-screen h-screen fixed`} onClick={()=>{props.setIsOpen(false)}}
+             <div className='fixed overflow-hidden'><div className={` flex justify-center items-center w-screen h-screen fixed`} onClick={()=>{
+              props.setIsOpen(false)
+              setImageSrc(null)
+            }}
               onScroll={()=>{props.setIsOpen(false)}} 
              style={{background: 'rgba(52,58,70,.8)'}}
              ></div>
