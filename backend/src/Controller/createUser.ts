@@ -46,30 +46,30 @@ async function createUser(req:Request,res:Response){
         let userData = req.body;
         console.log(userData)
         console.log(userData)
-        if(!userData.email || !userData.username || !userData.password || !userData.Otp ){
+        if(!userData.email || !userData.username || !userData.password  ){
             res.status(422).json({error: "Please Fill the details Correctly"});
             return;
         }
         //verify the otp
-        const otp_Service = process.env.OTP_SERVICE_URL
-        const apiKey = process.env.OTP_SERVICE_API_KEY
-        const sendOTP = await axios.post(otp_Service + 'verifyOTP',{
-            email : userData.email,
-            otp : userData.Otp
-        },
-        {
-            params : {
-                apiKey : apiKey
-            }
-        })
-        if(sendOTP.status===401){
-            res.status(401).json({error : 'Incorrect OTP'})
-            return;
-        }   
-        if(sendOTP.status!==200){
-            res.status(403).json({error : 'Incorrect OTP or OTP Expired'})
-            return;
-        }
+        // const otp_Service = process.env.OTP_SERVICE_URL
+        // const apiKey = process.env.OTP_SERVICE_API_KEY
+        // const sendOTP = await axios.post(otp_Service + 'verifyOTP',{
+        //     email : userData.email,
+        //     otp : userData.Otp
+        // },
+        // {
+        //     params : {
+        //         apiKey : apiKey
+        //     }
+        // })
+        // if(sendOTP.status===401){
+        //     res.status(401).json({error : 'Incorrect OTP'})
+        //     return;
+        // }   
+        // if(sendOTP.status!==200){
+        //     res.status(403).json({error : 'Incorrect OTP or OTP Expired'})
+        //     return;
+        // }
 
         //if verified
         userData.password = await hashPassword(userData.password);

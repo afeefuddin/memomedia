@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { isValidDetails,getUserDatafromDB, getUserProfilePicfromDb, updateProfilePicInDB, searchUsersFromDB } from "../Database/userHandler";
+import { isValidDetails,getUserDatafromDB, getUserProfilePicfromDb, updateProfilePicInDB, searchUsersFromDB, addFollowerInDB, removeFollowerInDB, checkIfFollowingInDB } from "../Database/userHandler";
 import { generateWebTokens } from "../Middleware/auth";
 import { getIfUserHasLiked, getusersPostFromDb } from "../Database/PostHandler";
 import uploadImagetoCloudinary from "../Utils/Cloudinary";
@@ -7,8 +7,6 @@ import uploadImagetoCloudinary from "../Utils/Cloudinary";
 async function loginUser(req:Request,res:Response) {
   try{
     const loginData = req.body;
-    console.log(loginData.password)
-    console.log('here')
     let isCorrect: any = await isValidDetails(loginData);
     if(!isCorrect){
         res.sendStatus(401);
@@ -50,7 +48,6 @@ async function loginUser(req:Request,res:Response) {
 async function userHasLiked(req:Request, res:Response){
   const userId = req.headers.userid;
   const postId = req.headers.postid;
-  console.log(userId + "yes")
   if(!userId || !postId){
     res.sendStatus(401);
         return;
@@ -66,7 +63,6 @@ async function userHasLiked(req:Request, res:Response){
 
 async function getUserDetails(req:Request,res:Response) {
     const username = req.params.username;
-    console.log(username)
     try{
       const response =  await getUserDatafromDB(username);
       if(response){
@@ -131,7 +127,6 @@ async function getUserProfilePic(req:Request,res:Response){
 
 async function updateProfile(req:Request,res:Response){
   try {
-    console.log('here')
     const profileBody = req.body;
   
     const username:  string = req.headers.username as string
@@ -170,4 +165,42 @@ async function searchUser(req:Request, res : Response) {
     res.sendStatus(500)
   }
 }
-export {loginUser,userHasLiked,getUserDetails,updateProfile,searchUser};
+
+async function followUser(req:Request,res:Response) {
+  try {
+    const userId = req.headers.userid;
+    const accountId = req.body.accountId;
+    const data = await addFollowerInDB(userId as string,accountId);
+    res.sendStatus(200)
+  } catch (error) {
+    res.sendStatus(500)
+  }
+}
+
+async function unFollowUser(req:Request,res:Response) {
+  try {
+    const userId = req.headers.userid;
+    const accountId = req.body.accountId;
+    const data = await removeFollowerInDB(userId as string,accountId);
+    res.sendStatus(200)
+  } catch (error) {
+    res.sendStatus(500)
+  }
+}
+
+async function checkIfFollowing(req:Request,res:Response){
+  try {
+    const userId =  req.headers?.userid;
+    const accountId = req.headers.accountid;
+    const isFollowing = await checkIfFollowingInDB(userId as string,accountId as string);
+    if(isFollowing)
+    res.status(200).json({"isFollowing" : "true"})
+    else
+    res.status(200).json({"isFollowing" : "false"})
+    console.log("Hereee",isFollowing)
+  } catch (error) {
+    res.status(500).json({"isFollowing" : "false"})
+  }
+}
+
+export {loginUser,userHasLiked,getUserDetails,updateProfile,searchUser,followUser,unFollowUser,checkIfFollowing};

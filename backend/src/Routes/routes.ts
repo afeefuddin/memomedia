@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.route('/login').post(loginUser)
 router.route('/signup').post(createUser)
-router.route('/signup/sendOTP').post(sendOTP)
+// router.route('/signup/sendOTP').post(sendOTP)
 router.route('/posts/hasLiked').get(userHasLiked);
 router.route('/users/profile/:username').get(getUserDetails);
 router.route('/posts/comment').post(getAllComment)

@@ -6,6 +6,7 @@ const api_link = import.meta.env.VITE_API_LINK;
 const jwt_token_id = localStorage.getItem('jwt_token_id')
 
 const handleLogin = async (username: string, password: string) => {
+  console.log(password)
     const response = await axios.post(api_link + 'login', {
       username: username,
       password: password
@@ -30,12 +31,11 @@ const sendOTP= async(username: string, email : string) =>{
 }
 
 
-const createUser= async(username: string, email : string , password : string,otp :string|undefined) =>{
+const createUser= async(username: string, email : string , password : string) =>{
   const response = await axios.post(api_link + 'signup',{
     username : username,
     email : email,
     password : password,
-    Otp : otp
   })
   return response.data;
 }

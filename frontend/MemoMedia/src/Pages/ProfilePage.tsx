@@ -7,26 +7,84 @@ import { useParams } from 'react-router'
 import UpdateProfile from '../Components/UpdateProfile'
 import NavigationIcons from '../Components/NavigationIcons'
 
+
+
+interface data { 
+    _id : any,
+    username : string;
+    password : string;
+    email : string;
+    post : string[];
+    follower : string[];
+    following : string[];
+    accountCreated : number;
+    profilePic? : string;
+    PostsData : any
+}
+
+interface ResponseAPI {
+    dataToSend : data
+}
+
 function ProfilePage() {
     const isLoggedIn = true;
     const [isUser,setIsUser] = useState(false)
     const {username} = useParams()
-    const [userData, setUserData] = useState();
+    const [isFollowing,setIsFollowing] = useState(false);
+    const [userData, setUserData] = useState<data | null>();
     const [isOpen,setIsOpen] = useState<boolean>(false)
     // const {isError,data} = getUserDetails('afeefuddin')
     const fetchApi:(username : string)=>any = async(username : string) => {
        
         try{
-            let res = await axios.get(`http://localhost:8000/api/users/profile/${username}`);
-            res = await res.data;
-            console.log(res)
+            let response = await axios.get(`http://localhost:8000/api/users/profile/${username}`);
+            let res = await response.data as ResponseAPI;
+            console.log()
             if(res) {
-                setUserData(res?.dataToSend)
+                setUserData(res.dataToSend)
             }
         }
         catch(error){
             console.log(error)
         }
+    }
+    const followUser : ()=>void = async()=>{
+        const token = localStorage.getItem('jwt_token_id')
+        const data = localStorage.getItem('user')
+        const accountId = userData!._id
+        let userId;
+        if(data){
+             userId =  JSON.parse(data)._id
+        }
+        const headers = {
+            'Authorization': 'Bearer '+token,
+            userId, 
+        }
+        const req = await axios.post(import.meta.env.VITE_API_LINK + 'follow',{
+            accountId
+        },{
+            headers
+         },)
+         console.log(req)
+    }
+    const unfollowUser : ()=>void = async()=>{
+        const token = localStorage.getItem('jwt_token_id')
+        const data = localStorage.getItem('user')
+        const accountId = userData!._id
+        let userId;
+        if(data){
+             userId =  JSON.parse(data)._id
+        }
+        const headers = {
+            'Authorization': 'Bearer '+token,
+            userId, 
+        }
+        const req = await axios.post(import.meta.env.VITE_API_LINK + 'unfollow',{
+            accountId
+        },{
+            headers
+         },)
+         console.log(req)
     }
     const checkIfuser : () => any =  () =>{
         const data = localStorage.getItem('user')
@@ -37,11 +95,45 @@ function ProfilePage() {
             }
         }
     }
+    
+    const checkIfFollowing : () => void = async()=>{
+        const data = localStorage.getItem('user')
+        const token = localStorage.getItem('jwt_token_id')
+        let userId;
+        if(data){
+             userId =  JSON.parse(data)._id
+        }
+       try {
+        const headers =  {
+            'Authorization': 'Bearer '+token,
+            userId,
+            accountId : userData?._id
+
+          }
+         const req = await axios.get(import.meta.env.VITE_API_LINK + 'followed',{
+            headers
+         })
+         const data = await req.data
+         const isFollowing = data.isFollowing
+         if(isFollowing === "true")
+         setIsFollowing(true)
+         
+       } catch (error) {
+        
+       }
+    }
     useEffect(()=>{
        
-        fetchApi(username)
+        fetchApi(username!)
         checkIfuser()
     },[])
+    useEffect(()=>{
+        console.log("state updated",isUser,userData)
+        if(!isUser && userData){
+            console.log("here")
+            checkIfFollowing()
+        }
+    },[isUser,userData])
     if(userData==null){
         return (
             <div className='h-screen flex items-center justify-center' style={{background : 'var(--primary-bg-color)'}}>
@@ -59,7 +151,15 @@ function ProfilePage() {
                 <div><img className='h-36 rounded-full' src={userData?.profilePic} alt="" /></div>
                 <div className='text-lg text-center mt-4 mb-4'>{userData?.username}</div>
                 {isLoggedIn && isUser && <Button className='ml-auto mr-auto mt-2 mb-4' onClick={()=>setIsOpen(true)}>Update Profile Pic</Button>}
-                {isLoggedIn && !isUser && <Button>Follow</Button>}
+                {isLoggedIn && !isUser && <Button onClick={()=>{
+                    console.log(isFollowing,isUser)
+                    if(!isFollowing && !isUser){
+                        followUser()
+                    }
+                    else{
+                        unfollowUser()
+                    }
+                }} >{isFollowing ?  <span>UnFollow</span> : <span>Follow</span>}</Button>}
                 <div className='flex flex-row gap-6 mt-4 mb-4'>
                 <div>{userData.PostsData?.length} Posts</div>
                 <div>{userData.follower?.length} Followers</div>

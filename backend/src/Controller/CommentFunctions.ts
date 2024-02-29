@@ -4,10 +4,10 @@ import { insertCommentToThePost } from "../Database/PostHandler";
 
 async function createComment(req: Request,res:Response){
     try{
-        console.log("Hit")
+
         const newComment = req.body;
         const comment = await addComment(newComment);
-        console.log(comment)
+
         if(comment){
             const response = await insertCommentToThePost(String(comment._id),newComment.post)
             if(response){

@@ -79,7 +79,6 @@ async function getUserDatafromDB(username:string) {
 }
 async function getUserProfilePicfromDb(userId : string) {
     try {
-        console.log(userId+"here")
         const res = await User.findById(userId).select('profilePic')
         return res
     } catch (error) {
@@ -121,4 +120,69 @@ async function searchUsersFromDB(value:String) {
     }
 }
 
-export {addUser, isUserPresent,isValidDetails,addPostToUser,getUserDatafromDB,getUserProfilePicfromDb,updateProfilePicInDB,searchUsersFromDB}
+async function addFollowerInDB(userId : string, accountId: string) {
+    try {
+        const userUpdate = await User.updateOne({_id: userId}, {$addToSet: {following: accountId}});
+        const accountUpdate = await User.updateOne({_id: accountId}, {$addToSet: {follower: userId}});
+        
+        if (userUpdate.modifiedCount === 0 || accountUpdate.modifiedCount === 0) {
+            throw new Error('No documents updated. Check if userId and/or accountId are valid.');
+        }
+        
+        console.log('Follower added successfully.');
+    } catch (error) {
+        console.error('Error adding follower:', error);
+    }
+}
+
+async function removeFollowerInDB(userId: string, accountId:string) {
+    try {
+        const userUpdate = await User.updateOne(
+            { _id: userId },
+            { $pull: { following: accountId } }
+        );
+
+        const accountUpdate = await User.updateOne(
+            { _id: accountId },
+            { $pull: { follower: userId } }
+        );
+
+        if (userUpdate.modifiedCount === 0 || accountUpdate.modifiedCount === 0) {
+            throw new Error('No documents updated. Check if userId and/or accountId are valid.');
+        }
+
+        console.log('Follower removed successfully.');
+    } catch (error) {
+        console.error('Error removing follower:', error);
+    }
+}
+
+async function checkIfFollowingInDB(userId: string, accountId: string) {
+    try {
+        const query = await User.findOne({_id: userId})
+        console.log(query,accountId)
+        if(!query){
+            return false;
+        }
+        const id = new mongoose.Types.ObjectId(accountId)
+        if(query.following.includes(id)){
+            return true;
+        }
+        return false;
+    } catch (error) {
+        return false;
+    }
+}
+
+export {addUser,
+     isUserPresent,
+     isValidDetails,
+     addPostToUser,
+     getUserDatafromDB,
+     getUserProfilePicfromDb,
+     updateProfilePicInDB,
+     searchUsersFromDB,
+     addFollowerInDB,
+     removeFollowerInDB,
+     checkIfFollowingInDB
+    }

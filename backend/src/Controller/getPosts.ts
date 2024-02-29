@@ -2,7 +2,6 @@ import { Request, Response } from "express"
 import { getPostFromDb,getPostfromIdfromDB,getSizeofPost } from "../Database/PostHandler";
 
 async function getPosts(req:Request,res:Response){
-    console.log("Hello")
     try{
         const pos : number = Number(req.query.pos);
         const size: number = Number(req.query.size);
@@ -27,9 +26,7 @@ async function getPosts(req:Request,res:Response){
 async function getPostfromId(req:Request,res:Response){
     try {
         const id = req.params.postId;
-        console.log(id)
         const post = await getPostfromIdfromDB(String(id))
-        console.log(post)
 
         if(post!=null){
             res.status(200).json({post})

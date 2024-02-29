@@ -10,7 +10,6 @@ async function getPostFromDb(page: number, pageSize: number) {
             .skip((page) * pageSize)
             .lean()
             .exec();
-        console.log(Posts)
         const allPost = []
         for (let i = 0; i < Posts.length; i++) {
             let post = Posts[i];
@@ -22,7 +21,6 @@ async function getPostFromDb(page: number, pageSize: number) {
             allPost.push(curPost)
 
         }
-        console.log(allPost)
         return allPost;
     }
     catch (error) {
@@ -137,18 +135,15 @@ async function removeLikeInthePost(postId: string, userId: string) {
 
 async function getIfUserHasLiked(userId: string, postId: string) {
     try {
-        console.log(userId);
-        console.log(postId);
+
 
         const post = await Post.findOne({ _id: postId, likes: { $in: [userId] } });
 
         if (post) {
-            console.log(`User with ID ${userId} has liked this post.`);
             return true;
         } else {
-            console.log(`User with ID ${userId} has not liked this post.`);
+            return false
         }
-        console.log('Documents matching the search:');
     } catch (error) {
         console.error('Error executing the query:');
     }
