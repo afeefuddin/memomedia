@@ -12,7 +12,6 @@ async function uploadImagetoCloudinary(localFilePath: string){
     try{
         if(!localFilePath) return;
         const res = await cloudinary.uploader.upload(localFilePath);
-        console.log("yay");
         fs.unlinkSync(localFilePath);
         return res.url;
 

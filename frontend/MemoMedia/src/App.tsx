@@ -1,16 +1,14 @@
 import '@radix-ui/themes/styles.css';
 import { Theme } from '@radix-ui/themes';
-import LoginComponent from "./Components/LoginComponent"
 import { useSelector } from 'react-redux';
 import Login from './Pages/Login';
 import Home from './Pages/Home';
-import { Router, Routes, Route } from 'react-router';
+import {  Routes, Route } from 'react-router';
 import ProfilePage from './Pages/ProfilePage';
 import AddPost from './Pages/AddPost';
 import Signup from './Pages/Signup';
 import PrivateRoute from './Components/PrivateRoute';
 import PostPage from './Pages/PostPage';
-import AuthRoute from './Components/AuthRoute';
 import Menu from './Components/Menu';
 import Search from './Pages/Search';
 import { useEffect } from 'react';
@@ -21,9 +19,8 @@ import { StateType } from './Store/store';
 function App() {
 
 
-  const curTheme = useSelector((state: StateType) => state.theme.currentTheme);
+  const curTheme : any = useSelector((state: StateType) => state.theme.currentTheme);
   localStorage.setItem('theme',curTheme)
-  console.log(curTheme)
 
   useEffect(() => {
     // Apply dark mode classes when the component mounts or when isDarkMode changes

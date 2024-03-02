@@ -5,9 +5,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
     _id :  string
     username : string;
     email : string;
-    post : any;
-    follower : any;
-    following : any;
+    post : string[];
+    follower : string[];
+    following : string[];
     accountCreated : number;
     profilePic : string;
 

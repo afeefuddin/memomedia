@@ -6,7 +6,6 @@ const api_link = import.meta.env.VITE_API_LINK;
 const jwt_token_id = localStorage.getItem('jwt_token_id')
 
 const handleLogin = async (username: string, password: string) => {
-  console.log(password)
     const response = await axios.post(api_link + 'login', {
       username: username,
       password: password
@@ -46,7 +45,6 @@ const isLiked = async (userId:string,postId:string) => {
     userId : userId,
     postId : postId,
   }
-  console.log(headers);
   const response = await axios.get(api_link+'posts/hasLiked', {
     headers:headers,
    })
@@ -55,7 +53,6 @@ const isLiked = async (userId:string,postId:string) => {
 };
 
 const useIsLiked = (userId :string, postId :string)=>{
-  console.log(userId + "Here")
 return useQuery({
     queryKey: ['isLiked'],
    queryFn :()=> isLiked(userId,postId),
@@ -69,7 +66,6 @@ const Like = async (userId:string,postId:string) => {
   const headers =  {
     'Authorization': 'Bearer '+jwt_token_id
   }
-  console.log(headers)
   const response = await axios.put(api_link+'post/like',{userId,postId},{
     headers:headers,
    })
@@ -91,7 +87,6 @@ const userDetails = async (username: string) =>{
 }
 
 const getUserDetails = (username : string)=>{
-  console.log(username + "Here")
   return useQuery({
     queryKey: ['isLiked'],
    queryFn :()=> userDetails(username),
@@ -115,7 +110,6 @@ const getPostPage = (userId : string)=>{
 }
 const createComment = async(postId : string|undefined,message: string,userId:string,username:string) =>{
 
-  // const userData = useSelector((state:any)=>state.auth.userData)
   const body = { 
     message : message,
     post : postId,
@@ -125,7 +119,6 @@ const createComment = async(postId : string|undefined,message: string,userId:str
   const headers =  {
     'Authorization': 'Bearer '+jwt_token_id
   }
-  console.log(body)
   const response = await axios.post(api_link+'create/comment',body,{
     headers: headers
   })
@@ -156,9 +149,7 @@ const loadDetails = async()=>{
      let user = localStorage.getItem('user')
      if(user!==null){
       let userData = JSON.parse(user)
-      console.log(data)
       userData['profilePic'] = data.data.profilePic
-      console.log
       localStorage.setItem('user',JSON.stringify(userData))
      }
 
@@ -170,20 +161,5 @@ const loadDetails = async()=>{
 
 }
 
-// const searchUsers = async(value : string) => {
-//   const data = await axios.get(api_link + `search/${value}`)
-//   const res = await data.data;
-//   return res
-// }
-
-// const useSearch : (value:string)=>any = (value : string) =>{
-//   return useQuery({
-//     queryKey : ['Search'],
-//     queryFn : () => searchUsers,
-//     refetchOnWindowFocus : false, 
-//     enabled : !!value,
-
-//   })
-// }
 
 export  {useLogin,handleLogin,useIsLiked,updateLike,getUserDetails,createUser,sendOTP,getPostPage,useCreateComment,loadDetails};

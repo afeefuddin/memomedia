@@ -43,7 +43,6 @@ async function getComment(req:Request,res:Response) {
 async function getAllComment(req:Request,res:Response) {
     try {
         const commentIds = req.body.comments
-        console.log(commentIds)
         const Comment = await getListofCommentsFromDb(commentIds)
         res.status(200).json(Comment)
     } catch (error) {

@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react"
+import { MutableRefObject, useEffect, useRef } from "react"
 
-let useOutsideClick = (handler : any)=>{
-    let ref = useRef()
+let useOutsideClick :(handler : any)=> MutableRefObject<HTMLDivElement | null | undefined> = (handler : any)=>{
+    let ref = useRef<HTMLDivElement | null | undefined>(null)
     useEffect(()=>{
         let curHandler = (event : any)=>{
             if(!ref.current?.contains(event.target)){

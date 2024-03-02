@@ -20,17 +20,16 @@ function HomeFeed() {
     const [pageLoading,setPageLoading] = useState(true)
     const {loading,posts,hasMore} = usePostSearch(page)
     const dispatch = useDispatch();
-    const lastPost = useRef();
+    const lastPost = useRef<IntersectionObserver | null>();
     // const firstPost = useRef();
     const isAddPost = useSelector((state:StateType)=>state.addpost.isOpen)
 
 
-    const fetchItems = useCallback((node)=>{
+    const fetchItems = useCallback((node : HTMLDivElement)=>{
       if(loading) return;
       if(lastPost.current) lastPost.current.disconnect()
       lastPost.current = new IntersectionObserver(e=>{
         if(e[0].isIntersecting && hasMore){
-          console.log('Visible')
           setPage(prev=>prev+1)
         }
       }) 
@@ -45,7 +44,7 @@ function HomeFeed() {
       loadPage()
     },[])
 
-    const username = useSelector((state:StateType) => state.auth.userData.username)
+    // const username = useSelector((state:StateType) => state.auth.userData.username)
     if(pageLoading){
       return (
         <div className='h-screen flex items-center justify-center' style={{background : 'var(--primary-bg-color)'}}>
@@ -64,11 +63,11 @@ function HomeFeed() {
           <div className='mt-4 flex flex-col justify-center'>
             {/* <div><Post items={}/></div> */}
             {/* <div className='w-fit h-8 m-auto'><div className='text-center font-inter text-blue-700 cursor-pointer'onClick={}>Refresh</div></div> */}
-          <div>{posts && posts?.map((item:any,index:any)=>{
+          <div>{posts && posts?.map((item:any,index:number)=>{
             if(index+1===posts.length){
-              return  <div ref={fetchItems}> <Post key={item} items = {item} /> </div>
+              return  <div ref={fetchItems} key={index}> <Post items = {item} /> </div>
             }
-           return <div> <Post key={item} items = {item} /> </div>
+           return <div key={index}> <Post  items = {item} /> </div>
             
            } )}
            {loading && <div >

@@ -1,4 +1,4 @@
-import  { useState } from 'react'
+import  { ChangeEvent, useState } from 'react'
 import styles from './css/AddPost.module.css'
 import { setAddPost } from '../Store/addPostSlice';
 import PreviewImage  from '../assets/previewImage.svg';
@@ -16,35 +16,32 @@ function AddPost() {
   const isAuthenticated = useSelector((state:StateType)=>state.auth.isAuthenticated)
   const id = useSelector((state:StateType)=>state.auth.userData._id)
   const [caption , setCaption ] = useState('');
-  const [file,setFile] = useState(null)
-  const [imageSrc, setImageSrc] = useState(null);
+  const [file,setFile] = useState<File | null>(null)
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [uploading,setUploading] = useState(false)
-  console.log(id)
   const dispatch = useDispatch();
   const toggleAddPost = () =>{
     setImageSrc(null)
     dispatch(setAddPost())
   }
-  const handleFileChange = (e) => {
-    const curfile = e.target.files[0];
+  const handleFileChange = (e :ChangeEvent<HTMLInputElement> ) => {
+    const curfile = e.target.files![0];
+    if(!curfile){
+      return
+    }
     setFile(curfile)
     if (curfile) {
       const objectURL = URL.createObjectURL(curfile);
       setImageSrc(objectURL);
     }
   };
-  // const onChange = (e: any) => {
-  //     console.log(e.target.files[0])
-  //     setFile(e.target.files[0])
-  //     loadfile(e)
-  // }
+
   const username = useSelector((state:any)=>state.auth.userData.username)
   
   async function upload() {
     setUploading(true)
-    console.log(caption)
     const formData = new FormData();
-    formData.append('picture',file);
+    formData.append('picture',file!);
     formData.append('caption',caption);
     formData.append('userId',id);
     formData.append('username',username)

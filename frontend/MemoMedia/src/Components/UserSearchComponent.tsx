@@ -13,7 +13,7 @@ export interface UserData {
 
 }
 
-function UserSearchComponent({data }:{data : {data:UserData}} ) {
+function UserSearchComponent({data }:{data : UserData} ) {
     console.log(data);
     const navigate = useNavigate();
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { Button } from '@radix-ui/themes';
 import PreviewImage  from '../assets/previewImage.svg';
 import axios from 'axios';
@@ -8,10 +8,10 @@ import axios from 'axios';
 function UpdateProfile(props:any) {
 
     const [file,setFile] = useState<any>(null);
-    const [imageSrc,setImageSrc] = useState(null)
+    const [imageSrc,setImageSrc] = useState<string | null>(null)
 
-    const handleFileChange = (e) => {
-        const curfile = e.target.files[0];
+    const handleFileChange = (e : ChangeEvent<HTMLInputElement>) => {
+        const curfile = e.target.files![0];
         setFile(curfile)
         if (curfile) {
           const objectURL = URL.createObjectURL(curfile);

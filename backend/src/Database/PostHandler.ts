@@ -1,6 +1,7 @@
 import { Post } from "../Model/PostSchema"
 import { Ipost } from "../Interfaces/Interface";
 import { addPostToUser, getUserProfilePicfromDb } from "./userHandler";
+import mongoose from "mongoose";
 
 // Get N posts from DB for the feed
 async function getPostFromDb(page: number, pageSize: number) {
@@ -42,7 +43,7 @@ async function getSizeofPost() {
 }
 
 //Get a list of post from db for profile page
-async function getusersPostFromDb(postList: any) {
+async function getusersPostFromDb(postList: mongoose.Types.ObjectId[]) {
     try {
         const Posts =await Post.find({ _id: { $in: postList } }).sort({ date: -1 }).lean();
         const allPost = []
@@ -66,7 +67,6 @@ async function getusersPostFromDb(postList: any) {
 
 //create post of the user
 async function addPostinDB(postBody: Ipost) {
-    console.log(postBody);
     try {
         const curPost = new Post({
             caption: postBody.caption,
@@ -108,7 +108,6 @@ async function addLikeInthePost(postId: string, userId: string) {
             postId,
             { $push: { likes: userId } },
         )
-        console.log(post);
     }
     catch (error) {
         return false;

@@ -19,7 +19,7 @@ function PostPage() {
   // const [blinking,setBlinking] = useState(false)
   const [posting,setPosting] = useState(false)
   const [show ,setShow] = useState(false);
-  const createComment = useCreateComment(postId,comment,userData.userId,userData.username)
+  const createComment = useCreateComment(postId,comment,userData._id,userData.username)
 
   function postComment(){
     createComment.mutate()
@@ -46,7 +46,6 @@ function PostPage() {
 useEffect(onLoadEffect, []);
 
 
-
   if (isLoading || !show) {
     return <div className='flex items-center justify-center' style={{ background: 'var(--primary-bg-color)' , height:'100vh'}}>Loading...</div>;
   }
@@ -71,7 +70,6 @@ useEffect(onLoadEffect, []);
             </div>
             {comment.length > 0 && !posting &&<div><Button 
             onClick={()=>{
-              console.log('Clicked')
               postComment()}}>Post</Button></div>}
             {posting && <div>
                 <Button className='bg-blue-400'>Posting...</Button>

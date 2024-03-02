@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { RefObject, useEffect, useState } from 'react'
 import { useOutsideClick } from '../Hooks/useOutSideClick'
 import { useDispatch } from 'react-redux'
 import { setSearch } from '../Store/searchSlice'
@@ -26,10 +26,8 @@ function Search() {
         refetchOnReconnect : false,
         
     })
-    // console.log("Here" + searchQuery)
     const handleEnter = (e : React.KeyboardEvent) =>{
         if(e.key === 'Enter'){
-            console.log("Yes");
             
         }
     }
@@ -54,13 +52,11 @@ function Search() {
 
   useEffect(()=>{
       if(query.isSuccess){
-      console.log(query.data);
-    // setData(query.data.data)
       }
   },[query])
   return (
    
-    <div ref={node} className='w-full h-full flex flex-col justify-center items-center pl-2 pr-2'>
+    <div ref={node as RefObject<HTMLDivElement>} className='w-full h-full flex flex-col justify-center items-center pl-2 pr-2'>
         <input placeholder='Search..' className='outline-none border border-black dark:border-white rounded-full pl-4 pr-4 pt-1 pb-1
         w-full sm:w-3/4 text-center' style={{background:'var(--secondary-bg-color)'}} onKeyDown={handleEnter} value={searchQuery ?? ''} onChange={handleChange}/>
         <div className='absolute top-20 w-full sm:w-3/4 pl-4 pr-4 pt-2 pb-2 text-center shadow dark:shadow-white :shadow-black' style={{background:'var(--secondary-bg-color)', }} >
@@ -69,7 +65,7 @@ function Search() {
               No Users Found
               </div>}
             {query.isLoading && <div>Loading...</div>}
-          {query.data?.length>0 && (searchQuery?? '').length>0 && <div>{query.data.map((e : {data : UserData})=>{
+          {query.data?.length>0 && (searchQuery?? '').length>0 && <div>{query.data.map((e : UserData)=>{
                 return <div><UserSearchComponent data={e} /></div>
             })}</div> } 
             </div>

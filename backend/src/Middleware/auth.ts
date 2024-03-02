@@ -35,7 +35,6 @@ async function authenticateUser(req:Request, res : Response,next : NextFunction)
         return;
     }
     else{
-        console.log('Here');
         next();
         
     }

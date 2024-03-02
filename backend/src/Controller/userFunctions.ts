@@ -7,7 +7,7 @@ import uploadImagetoCloudinary from "../Utils/Cloudinary";
 async function loginUser(req:Request,res:Response) {
   try{
     const loginData = req.body;
-    let isCorrect: any = await isValidDetails(loginData);
+    let isCorrect = await isValidDetails(loginData);
     if(!isCorrect){
         res.sendStatus(401);
         return;
@@ -197,7 +197,6 @@ async function checkIfFollowing(req:Request,res:Response){
     res.status(200).json({"isFollowing" : "true"})
     else
     res.status(200).json({"isFollowing" : "false"})
-    console.log("Hereee",isFollowing)
   } catch (error) {
     res.status(500).json({"isFollowing" : "false"})
   }

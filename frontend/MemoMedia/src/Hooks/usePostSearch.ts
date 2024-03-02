@@ -4,7 +4,7 @@ import axios from 'axios'
 export default function usePostSearch (pageNumber:number) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState<any[]>([])
   const [hasMore, setHasMore] = useState(false)
 
   const apiLink = import.meta.env.VITE_API_LINK
@@ -25,13 +25,10 @@ export default function usePostSearch (pageNumber:number) {
 
         const response = await axios.get(apiLink, { headers,params });
         const data = await response.data;
-          console.log(data.posts);
           setPosts(prev => {
               return [...prev,...data.posts]
           })
           setHasMore(data.postLeft >0)
-          console.log(data.postLeft)
-          console.log(hasMore)
           setLoading(false);
       }
       catch(error){

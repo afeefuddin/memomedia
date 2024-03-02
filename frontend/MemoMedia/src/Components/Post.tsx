@@ -27,7 +27,6 @@ function Post(props: any) {
       userId: userId,
       postId: postId,
     }
-    console.log(headers);
     try {
       const response = await axios.get(import.meta.env.VITE_API_LINK + 'posts/hasLiked', {
         headers: headers,
@@ -86,7 +85,6 @@ function Post(props: any) {
           <div className="m-auto flex flex-row" onClick={() => {
             if (isAuthenticated){
               LikeThePost()
-              console.log('Liked')
             }
             else {
               alert('Login First')

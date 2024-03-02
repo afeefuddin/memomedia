@@ -21,6 +21,10 @@ app.use(express.json());
 let port = 8000;
 connectDB();
 
+app.get('/cron',(req,res)=>{
+  res.status(200).json({'message':'Hello cron'})
+})
+
 app.use('/api',router);
 
 app.use(authenticateUser);

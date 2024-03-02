@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from './css/LoadingButton.module.css'
 
 const {actionBtn,loginBtn } = styles

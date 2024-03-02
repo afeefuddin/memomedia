@@ -8,8 +8,6 @@ async function createPost(req: Request,res:Response){
         // Add Post to cloudinary
         const file = req.file.path;
         const img_url = await uploadImagetoCloudinary(file);
-        console.log(postBody)
-        console.log(img_url);
         // Added the post
         const postBodyModified = {
             caption : postBody.caption,
@@ -17,7 +15,6 @@ async function createPost(req: Request,res:Response){
             userId : postBody.userId,
             username : postBody.username
         }
-        console.log(postBodyModified);
         const Post = await addPostinDB(postBodyModified);
         // Adding the Id of the post in the user profile
        

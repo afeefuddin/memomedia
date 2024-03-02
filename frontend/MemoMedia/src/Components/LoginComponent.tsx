@@ -18,7 +18,7 @@ function updateState(LoginMutate : any,dispatch:any){
     dispatch(login(LoginMutate?.data))
 }
 
-function LoginComponent(props: any) {
+function LoginComponent() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const curTheme = useSelector((state: StateType) => state.theme.currentTheme);

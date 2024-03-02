@@ -44,8 +44,6 @@ async function sendOTP(req:Request,res : Response) {
 async function createUser(req:Request,res:Response){
     try{
         let userData = req.body;
-        console.log(userData)
-        console.log(userData)
         if(!userData.email || !userData.username || !userData.password  ){
             res.status(422).json({error: "Please Fill the details Correctly"});
             return;

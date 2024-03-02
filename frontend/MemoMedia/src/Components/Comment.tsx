@@ -1,9 +1,17 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
+export interface CommentProps {
+  comments : string[]
+}
 
+interface CommentSchema {
+  profilePic : string;
+  username : string;
+  message : string;
+}
 
-function Comment(props : any) {
+function Comment(props : CommentProps) {
   const commentsFromProps = props.comments;
   const [comments,setComments] = useState([])
   async function fetchComments(){
@@ -28,7 +36,7 @@ function Comment(props : any) {
   return (
     <div className='p-2' style={{ background: 'var(--secondary-bg-color)' }}>
               <div className=''>
-                {comments && comments.map((item) => (
+                {comments && comments.map((item :  CommentSchema) => (
                   <div className='flex flex-col mt-2 mb-2'>
                     <div className='flex flex-row'>
                       <div className='h-8 rounded'>

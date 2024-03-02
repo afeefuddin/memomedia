@@ -1,8 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 
 // Global error handler middleware
 const errorHandler = (
-  err: any,
+  err: ErrorRequestHandler,
   req: Request,
   res: Response,
   next: NextFunction

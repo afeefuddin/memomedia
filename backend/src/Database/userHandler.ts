@@ -69,7 +69,6 @@ async function  addPostToUser(postID:Types.ObjectId,userId:Types.ObjectId) {
 }
 async function getUserDatafromDB(username:string) {
     try{
-        console.log(username)
         const res =  await User.findOne({username : username});
         return res;
     }
@@ -96,7 +95,6 @@ async function updateProfilePicInDB(img_url:string,username:string) {
         publicId = publicId?.split('.')[0]
         user.profilePic = img_url 
         await user.save()
-        console.log(publicId);
         //delete the old url from public id here
         const deleted = await deleteImagefromCloudinary(publicId)
         return true
@@ -129,7 +127,6 @@ async function addFollowerInDB(userId : string, accountId: string) {
             throw new Error('No documents updated. Check if userId and/or accountId are valid.');
         }
         
-        console.log('Follower added successfully.');
     } catch (error) {
         console.error('Error adding follower:', error);
     }
@@ -151,7 +148,6 @@ async function removeFollowerInDB(userId: string, accountId:string) {
             throw new Error('No documents updated. Check if userId and/or accountId are valid.');
         }
 
-        console.log('Follower removed successfully.');
     } catch (error) {
         console.error('Error removing follower:', error);
     }
@@ -160,7 +156,6 @@ async function removeFollowerInDB(userId: string, accountId:string) {
 async function checkIfFollowingInDB(userId: string, accountId: string) {
     try {
         const query = await User.findOne({_id: userId})
-        console.log(query,accountId)
         if(!query){
             return false;
         }

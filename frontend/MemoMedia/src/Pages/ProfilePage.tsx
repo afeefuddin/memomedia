@@ -7,10 +7,8 @@ import { useParams } from 'react-router'
 import UpdateProfile from '../Components/UpdateProfile'
 import NavigationIcons from '../Components/NavigationIcons'
 
-
-
 interface data { 
-    _id : any,
+    _id : string,
     username : string;
     password : string;
     email : string;
@@ -39,7 +37,6 @@ function ProfilePage() {
         try{
             let response = await axios.get(`http://localhost:8000/api/users/profile/${username}`);
             let res = await response.data as ResponseAPI;
-            console.log()
             if(res) {
                 setUserData(res.dataToSend)
             }
@@ -65,7 +62,6 @@ function ProfilePage() {
         },{
             headers
          },)
-         console.log(req)
     }
     const unfollowUser : ()=>void = async()=>{
         const token = localStorage.getItem('jwt_token_id')
@@ -84,9 +80,8 @@ function ProfilePage() {
         },{
             headers
          },)
-         console.log(req)
     }
-    const checkIfuser : () => any =  () =>{
+    const checkIfuser : () => void =  () =>{
         const data = localStorage.getItem('user')
         if(data){
             let usernameLocal = JSON.parse(data).username
@@ -126,14 +121,13 @@ function ProfilePage() {
        
         fetchApi(username!)
         checkIfuser()
-    },[])
+    },[username])
     useEffect(()=>{
-        console.log("state updated",isUser,userData)
         if(!isUser && userData){
-            console.log("here")
             checkIfFollowing()
         }
     },[isUser,userData])
+
     if(userData==null){
         return (
             <div className='h-screen flex items-center justify-center' style={{background : 'var(--primary-bg-color)'}}>
@@ -141,6 +135,7 @@ function ProfilePage() {
             </div>
         )
     }
+    
   return (
     <>
     <UpdateProfile isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -173,9 +168,9 @@ function ProfilePage() {
                 <div className='mt-4 flex flex-col  items-center '>
                 {userData && 'PostsData' in userData && userData.PostsData.length > 0 ? (
   userData.PostsData.map((item: any) => (
-    <div className='ml-2 mr-2 mt-4 mb-4'>
+    <div className='ml-2 mr-2 mt-4 mb-4' key={item._id}>
 
-        <Post key={item._id} items={item} />
+        <Post  items={item} />
     </div>
   ))
 ) : (
