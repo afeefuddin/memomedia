@@ -57,7 +57,7 @@ function ProfilePage() {
             'Authorization': 'Bearer '+token,
             userId, 
         }
-        const req = await axios.post(import.meta.env.VITE_API_LINK + 'follow',{
+         await axios.post(import.meta.env.VITE_API_LINK + 'follow',{
             accountId
         },{
             headers
@@ -75,7 +75,7 @@ function ProfilePage() {
             'Authorization': 'Bearer '+token,
             userId, 
         }
-        const req = await axios.post(import.meta.env.VITE_API_LINK + 'unfollow',{
+         await axios.post(import.meta.env.VITE_API_LINK + 'unfollow',{
             accountId
         },{
             headers

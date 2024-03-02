@@ -20,7 +20,6 @@ function Post(props: any) {
   }
   const [liked, setLiked] = useState(false)
   const [likedAlready, setLikedAlready] = useState(false);
-  const [blinking,setBlinking] = useState(false)
   const isLiked = async (userId: string, postId: string) => {
     const headers = {
 
@@ -94,7 +93,6 @@ function Post(props: any) {
             if(!props.PostPage)
             Navigate(`/post/${props.items._id}`)
             else{
-              setBlinking(true)
             }
           }}><Comment /><span className="sm:ml-2 mt-1 font-poppins cursor-pointer">Comment</span></div>
           <div className="m-auto flex flex-row" onClick={props.copyLink}><ShareIcon /><span className="sm:ml-2 mt-1 font-poppins">Share</span></div>
