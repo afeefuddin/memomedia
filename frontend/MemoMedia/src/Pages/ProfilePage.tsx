@@ -35,7 +35,7 @@ function ProfilePage() {
     const fetchApi:(username : string)=>any = async(username : string) => {
        
         try{
-            let response = await axios.get(`http://localhost:8000/api/users/profile/${username}`);
+            let response = await axios.get(import.meta.env.VITE_API_URL + `api/users/profile/${username}`);
             let res = await response.data as ResponseAPI;
             if(res) {
                 setUserData(res.dataToSend)
