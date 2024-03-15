@@ -54,7 +54,7 @@ async function isValidDetails(userData: Iloginuser)  {
 
 }
 
-async function  addPostToUser(postID:Types.ObjectId,userId:Types.ObjectId) {
+async function addPostToUser(postID:Types.ObjectId,userId:Types.ObjectId) {
     try{
 
         const insert = await User.updateOne(

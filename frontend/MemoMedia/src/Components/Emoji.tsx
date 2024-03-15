@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { StateType } from '../Store/store';
 
 function Emoji(props : {liked : boolean}) {
+  console.log(props.liked)
   const isAuthenticated = useSelector((state:StateType)=>state.auth.isAuthenticated)
     const [laugh,setLaugh] = useState(props.liked);
     useEffect(()=>{

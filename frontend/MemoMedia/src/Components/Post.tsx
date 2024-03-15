@@ -1,9 +1,8 @@
 import Emoji from "./Emoji"
 import Comment from './CommentIcon'
 import ShareIcon from "./ShareIcon"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useSelector } from "react-redux"
-import axios from "axios"
 import { updateLike } from "../api/api"
 import { useNavigate } from "react-router"
 import { StateType } from "../Store/store"
@@ -14,39 +13,11 @@ function Post(props: any) {
   const likePost = updateLike(userId, props.items._id)
   const isAuthenticated = useSelector((state: StateType) => state.auth.isAuthenticated)
   const Navigate = useNavigate()
+  const [liked, setLiked] = useState<Boolean>(props.items.isLiked)
   function LikeThePost() {
     setLiked((prev) => !prev);
     likePost.mutate();
   }
-  const [liked, setLiked] = useState(false)
-  const [likedAlready, setLikedAlready] = useState(false);
-  const isLiked = async (userId: string, postId: string) => {
-    const headers = {
-
-      userId: userId,
-      postId: postId,
-    }
-    try {
-      const response = await axios.get(import.meta.env.VITE_API_LINK + 'posts/hasLiked', {
-        headers: headers,
-      })
-      const data = await response.data;
-      if (data) {
-        setLikedAlready(data.isLiked)
-      }
-    }
-    catch (error) {
-      console.log(error)
-    }
-
-  };
-
-  useEffect(() => {
-    
-    isLiked(userId, props.items._id)
-
-  }, [])
-
   const getDate: (date: number) => string = (date: number) => {
     let curDate = Date.now() - date;
     if (curDate / 1000 < 60) {
@@ -63,7 +34,7 @@ function Post(props: any) {
   const DateFun = useMemo(()=>{   
     return getDate(props.items.date)
   },[])
-  
+console.log(props.items.isLiked)
   return (
     <div className={`w-full h-full mb-4 p-2`} style={{ background: 'var(--secondary-bg-color)' }}>
       <div className='flex flex-col justify-center h-full '>
@@ -88,7 +59,7 @@ function Post(props: any) {
             else {
               alert('Login First')
             }
-          }}><Emoji liked={likedAlready} /> </div>
+          }}><Emoji liked={props.items.isLiked} /> </div>
           <div className="m-auto flex flex-row" onClick={()=>{
             if(!props.PostPage)
             Navigate(`/post/${props.items._id}`)
@@ -97,7 +68,7 @@ function Post(props: any) {
           }}><Comment /><span className="sm:ml-2 mt-1 font-poppins cursor-pointer">Comment</span></div>
           <div className="m-auto flex flex-row" onClick={props.copyLink}><ShareIcon /><span className="sm:ml-2 mt-1 font-poppins">Share</span></div>
         </div>
-        <div className="ml-1 mt-2 flex flex-row" onClick={props.items.like}>{!likedAlready && liked ? <div>{props.items.likes.length + 1}</div> : <div>{props.items.likes.length}</div>}Likes</div>
+        <div className="ml-1 mt-2 flex flex-row" onClick={props.items.like}>{!props.items.isLiked && liked ? <div>{props.items.likes.length + 1}</div> : <div>{props.items.likes.length}</div>}Likes</div>
         {!props.PostPage && <div className="ml-1 mt-2 mb-2"  onClick={()=>Navigate(`/post/${props.items._id}`)}>Add a comment...</div>}
       </div>
     </div>

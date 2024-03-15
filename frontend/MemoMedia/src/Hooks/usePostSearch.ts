@@ -25,14 +25,31 @@ export default function usePostSearch (pageNumber:number) {
 
         const response = await axios.get(apiLink, { headers,params });
         const data = await response.data;
-          setPosts(prev => {
+        const userId = JSON.parse(localStorage.getItem('user')!)['_id']
+        await Promise.all(
+          data.posts?.map(async (post: any) => {
+            const postId = post._id;
+            const headers_hasLiked = {
+              userId: userId,
+              postId: postId,
+            };
+            const haslikedResponse = await axios.get(apiLink + 'posts/hasLiked', { headers: headers_hasLiked });
+            const hasliked = haslikedResponse.data;
+            post.isLiked = hasliked.isLiked;
+            return post;
+          })
+        );
+
+              console.log(data.posts)
+            setPosts(prev => {
               return [...prev,...data.posts]
           })
           setHasMore(data.postLeft >0)
           setLoading(false);
       }
-      catch(error){
+      catch(error : any){
           console.log("Error Fetching the Data");
+          console.log(error.message)
           setError(true);
       }
 
