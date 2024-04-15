@@ -88,6 +88,9 @@ function ProfilePage() {
             if (usernameLocal === username) {
                 setIsUser(true)
             }
+            else{
+                setIsUser(false)
+            }
         }
     }
 

@@ -49,8 +49,8 @@ console.log(props.items.isLiked)
           <div className="ml-2 font-lato">{DateFun}</div>
         </div>
         <div className="ml-2 mt-2 mb-2">{props.items.caption}</div>
-        {props.PostPage && <div className="m-auto flex items-center justify-center overflow-hidden" style={{ maxHeight: '300px', maxWidth: '100%' }}><img src={props.items.picture} decoding="async" alt="" className="" loading="eager"/></div>}
-        {!props.PostPage && <div className="m-auto flex items-center justify-center overflow-hidden" style={{ maxHeight: '300px', maxWidth: '360px' }}><img src={props.items.picture} decoding="async" alt="" className=""  loading="eager" /></div>}
+        {props.PostPage && <div className="m-auto flex items-center justify-center overflow-hidden" style={{ maxHeight: '300px', maxWidth: '100%' }}><img  src={props.items.picture} decoding="async" alt="" className="max-h-72" loading="eager"/></div>}
+        {!props.PostPage && <div className="m-auto flex items-center justify-center overflow-hidden" style={{ maxHeight: '300px', maxWidth: '360px' }}><img src={props.items.picture} decoding="async" alt="" className="max-h-72"  loading="eager" /></div>}
         <div className='grid grid-cols-3'>
           <div className="m-auto flex flex-row" onClick={() => {
             if (isAuthenticated){
