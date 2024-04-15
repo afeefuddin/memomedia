@@ -38,12 +38,6 @@ function NavigationIcons() {
                                 </svg>
                                 <div>Add Post</div>
                         </div>
-                        <div className='m-auto flex flex-col text-sm items-center cursor-pointer'>
-                                <svg width="28" height="28" viewBox="0 0 368 432" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M184 432C209.3 432 230 412.062 230 387.692H138C138 412.062 158.47 432 184 432ZM322 299.077V188.308C322 120.295 284.28 63.36 218.5 48.2954V33.2308C218.5 14.8431 203.09 0 184 0C164.91 0 149.5 14.8431 149.5 33.2308V48.2954C83.49 63.36 46 120.074 46 188.308V299.077L0 343.385V365.538H368V343.385L322 299.077Z" fill={currentTheme === 'light' ? 'black' : 'white'} />
-                                </svg>
-                                <div className='text-center'>Notifications</div>
-                        </div>
                 </div>
         )
 }
